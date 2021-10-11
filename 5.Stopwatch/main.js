@@ -3,34 +3,37 @@ const [$playButton, $resetButton] = document.querySelectorAll('.control');
 const $laps = document.querySelector('.laps');
 const $display = document.querySelector('.display');
 const startTime = new Date();
+let intervalController = null;
 
 // function --------------
 const getTime = ms => {
-  const minute = Math.floor(ms / (1000 * 60));
-  ms -= 1000 * 60 * minute;
-  const second = Math.floor(ms / 1000);
-  ms -= 1000 * second;
-  return `${minute}:${second}:${ms}`;
+  let _ms = ms;
+  const minute = Math.floor(_ms / (1000 * 60));
+  _ms -= 1000 * 60 * minute;
+  const second = Math.floor(_ms / 1000);
+  _ms -= 1000 * second;
+  const format = n => (n < 10 ? '0' + n : n + '');
+  return `${format(minute)}:${format(second)}:${format(Math.floor(_ms / 10))}`;
 };
 
 const timer = () => {
-  setInterval(() => {
-    const now = new Date();
-    $display.textContent = getTime(now - startTime);
-  }, 10);
+  const now = new Date();
+  $display.textContent = getTime(now - startTime);
 };
 
 // let startTime = new Date();
 
-// Event Listener
+// Event Binding
 $playButton.onclick = () => {
   $playButton.textContent = 'Stop';
   $resetButton.textContent = 'Lap';
   $resetButton.disabled = false;
-  timer();
+  intervalController = setInterval(timer, 10);
 };
 
-// $resetButton.onclick = () => {};
+$resetButton.onclick = () => {
+  clearInterval(intervalController);
+};
 // $laps.innerHTML = `
 //   <div>1</div>
 //   <div>00:00:65</div>
