@@ -2,8 +2,10 @@
 const [$playButton, $resetButton] = document.querySelectorAll('.control');
 const $laps = document.querySelector('.laps');
 const $display = document.querySelector('.display');
-const startTime = new Date();
+let startTime = new Date();
 let intervalController = null;
+let laps = 1;
+let timeInterval = null;
 
 // function --------------
 const getTime = ms => {
@@ -19,26 +21,56 @@ const getTime = ms => {
 const timer = () => {
   const now = new Date();
   $display.textContent = getTime(now - startTime);
+  timeInterval = now - startTime;
 };
 
-// let startTime = new Date();
+const reset = () => {
+  [...$laps.children].forEach($lap => {
+    $lap.classList.contains('lap-title')
+      ? ($lap.style.display = 'none')
+      : $lap.remove();
+  });
+};
 
 // Event Binding
 $playButton.onclick = () => {
-  $playButton.textContent = 'Stop';
-  $resetButton.textContent = 'Lap';
-  $resetButton.disabled = false;
-  intervalController = setInterval(timer, 10);
+  if ($playButton.textContent === 'Start') {
+    $playButton.textContent = 'Stop';
+    $resetButton.textContent = 'Lap';
+    $resetButton.disabled = false;
+    if (timeInterval) startTime = new Date() - timeInterval;
+    else startTime = new Date();
+    intervalController = setInterval(timer, 10);
+  } else {
+    $playButton.textContent = 'Start';
+    $resetButton.textContent = 'Reset';
+    clearInterval(intervalController);
+  }
 };
 
 $resetButton.onclick = () => {
-  clearInterval(intervalController);
+  if ($resetButton.textContent === 'Lap') {
+    [...$laps.children].forEach($lap => {
+      if ($lap.classList.contains('lap-title')) $lap.style.display = 'grid';
+    });
+    const $el = document.createElement('div');
+    $el.appendChild(document.createTextNode(laps++));
+    $laps.appendChild($el);
+    const $el2 = document.createElement('div');
+    $el2.appendChild(document.createTextNode($display.textContent));
+    $laps.appendChild($el2);
+  } else {
+    $resetButton.disabled = 'true';
+    laps = 1;
+    startTime = new Date();
+    timeInterval = null;
+    $display.textContent = getTime(0);
+    reset();
+  }
 };
-// $laps.innerHTML = `
-//   <div>1</div>
-//   <div>00:00:65</div>
-//   <div>2</div>
-//   <div>00:01:21</div>
-//   <div>3</div>
-//   <div>00:03:95</div>
-// `;
+
+window.addEventListener('DOMContentLoaded', () => {
+  [...$laps.children].forEach($lap => {
+    if ($lap.classList.contains('lap-title')) $lap.style.display = 'none';
+  });
+});
