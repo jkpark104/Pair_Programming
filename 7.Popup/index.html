@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Popup</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::after,
+      *::before {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Open Sans';
+        font-weight: 300;
+      }
+
+      .title {
+        color: #db5b33;
+        font-weight: 300;
+        text-align: center;
+      }
+
+      /* 팝업을 위한 CSS */
+      /* 모달 */
+      .modal-container {
+        position: fixed;
+        max-width: 520px;
+        min-height: 200px;
+        right: 0;
+        left: 0;
+        margin: 0 auto;
+        transform: translateY(20%);
+        border: 1px solid blue;
+        padding: 16px 24px 24px;
+      }
+
+      .modal-title {
+        color: #db5b33;
+        font-weight: 300;
+        text-align: center;
+      }
+
+      .modal-content {
+        line-height: 1.5;
+      }
+
+      .button-exit {
+        top: 0;
+        right: 0;
+        position: absolute;
+        margin: 16px 24px 0 0;
+        /* right: ; */
+        /* width: 2rem; */
+        /* height: 2rem; */
+        border-color: white;
+        /* background-color: white; */
+        /* border: none; */
+        /* background-color: transparent; */
+        background-color: #fff;
+        /* box-shadow: none; */
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 class="title">Popup</h1>
+
+    <!-- 팝업을 위한 HTML -->
+    <div class="modal-container" role="dialog">
+      <h2 class="modal-title">Hello!</h2>
+      <p class="modal-content">
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi
+        quisquam Architecto quam consectetur laboriosam earum ipsam atque,
+        numquam, voluptate Alias voluptatibus eius. Quam dicta, earum quisquam
+        numquam Architecto eius sed?
+      </p>
+      <div class="button-group">
+        <input type="text" />
+        <button class="button button-confirm" type="button">OK</button>
+        <button class="button button-cancel" type="button">Cancel</button>
+      </div>
+      <button class="button button-exit" type="button">
+        <span aria-hidden="true">&#215;</span>
+      </button>
+    </div>
+    <p class="popup-message"></p>
+    <script src="./main.js"></script>
+  </body>
+</html>

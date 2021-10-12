@@ -13,7 +13,7 @@ const toggleMode = state => $body.classList.toggle('dark', state);
 
 // Event bindings -------------------
 
-window.addEventListener('load', () => {
+window.addEventListener('DOMContentLoaded', () => {
   getStatus() ? (state = JSON.parse(getStatus())) : setStatus(state);
   toggleMode(state);
 });
@@ -21,5 +21,4 @@ $toggleBtn.onclick = () => {
   state = !JSON.parse(getStatus());
   setStatus(state);
   toggleMode(state);
-  // toggleNavigation(state);
 };
