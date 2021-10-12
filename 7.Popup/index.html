@@ -33,15 +33,26 @@
 
       /* 팝업을 위한 CSS */
       /* 모달 */
-      .modal-container {
+      .modal-container-container {
+        display: none;
+        background: rgba(0, 0, 0, 0.75);
         position: fixed;
+        left: 0;
+        bottom: 0;
+        top: 0;
+        right: 0;
+      }
+      .modal-container-container.active {
+        display: block;
+      }
+      .modal-container {
         max-width: 520px;
         min-height: 200px;
-        right: 0;
-        left: 0;
         margin: 0 auto;
-        transform: translateY(20%);
-        border: 1px solid blue;
+        transform: translateY(80%);
+        background-color: white;
+        box-shadow: rgba(0, 0, 0, 0.8);
+        border-radius: 10px;
         padding: 16px 24px 24px;
       }
 
@@ -60,39 +71,39 @@
         right: 0;
         position: absolute;
         margin: 16px 24px 0 0;
-        /* right: ; */
-        /* width: 2rem; */
-        /* height: 2rem; */
-        border-color: white;
-        /* background-color: white; */
-        /* border: none; */
-        /* background-color: transparent; */
-        background-color: #fff;
-        /* box-shadow: none; */
+        border-color: transparent;
+        background: transparent;
+        font-size: 24px;
+      }
+
+      .button-exit:hover {
+        transform: scale(1.3);
       }
     </style>
   </head>
 
   <body>
     <h1 class="title">Popup</h1>
-
     <!-- 팝업을 위한 HTML -->
-    <div class="modal-container" role="dialog">
-      <h2 class="modal-title">Hello!</h2>
-      <p class="modal-content">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi
-        quisquam Architecto quam consectetur laboriosam earum ipsam atque,
-        numquam, voluptate Alias voluptatibus eius. Quam dicta, earum quisquam
-        numquam Architecto eius sed?
-      </p>
-      <div class="button-group">
-        <input type="text" />
-        <button class="button button-confirm" type="button">OK</button>
-        <button class="button button-cancel" type="button">Cancel</button>
+    <button class="toggle-popup" type="button">toggle popup</button>
+    <div class="modal-container-container">
+      <div class="modal-container" role="dialog">
+        <h2 class="modal-title">Hello!</h2>
+        <p class="modal-content">
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi
+          quisquam Architecto quam consectetur laboriosam earum ipsam atque,
+          numquam, voluptate Alias voluptatibus eius. Quam dicta, earum quisquam
+          numquam Architecto eius sed?
+        </p>
+        <div class="button-group">
+          <input type="text" />
+          <button class="button button-confirm" type="button">OK</button>
+          <button class="button button-cancel" type="button">Cancel</button>
+        </div>
+        <button class="button button-exit" type="button">
+          <span aria-hidden="true">&#215;</span>
+        </button>
       </div>
-      <button class="button button-exit" type="button">
-        <span aria-hidden="true">&#215;</span>
-      </button>
     </div>
     <p class="popup-message"></p>
     <script src="./main.js"></script>
