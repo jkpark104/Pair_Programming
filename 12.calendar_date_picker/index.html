@@ -1,99 +1,341 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calendar</title>
-    <!-- 원하는 폰트와 아이콘을 사용해도 좋다. -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400"
-      rel="stylesheet"
-    />
-    <link
-      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      *,
-      *::after,
-      *::before {
-        box-sizing: border-box;
-      }
-      body {
-        font-family: 'Open Sans';
-        font-weight: 300;
-      }
-      .title {
-        color: #db5b33;
-        font-weight: 300;
-        text-align: center;
-      }
 
-      /* 뷰를 구현하세요. */
-      
-    </style>
-  </head>
-  <body>
-    <h1 class="title">Calendar</h1>
-    <input type="text" />
-    <div class="calendar">
-      <!-- 뷰를 구현하세요 -->
-      <div class="calendar-nav">
-        <h2 class="calendar-title">April 2021</h2>
-        <button class="button btnPrev">◀️</button>
-        <button class="button btnNext">▶️</button>
-      </div>
-      <div class="calendar-grid">
-          <div>SUN</div>
-          <div>MON</div>
-          <div>TUE</div>
-          <div>WED</div>
-          <div>THU</div>
-          <div>FRI</div>
-          <div>SAT</div>
-          <div>27</div>
-          <div>28</div>
-          <div>29</div>
-          <div>30</div>
-          <div>31</div>
-          <div>1</div>
-          <div>2</div>
-          <div>27</div>
-          <div>28</div>
-          <div>29</div>
-          <div>30</div>
-          <div>31</div>
-          <div>1</div>
-          <div>2</div>
-          <div>27</div>
-          <div>28</div>
-          <div>29</div>
-          <div>30</div>
-          <div>31</div>
-          <div>1</div>
-          <div>2</div>
-          <div>27</div>
-          <div>28</div>
-          <div>29</div>
-          <div>30</div>
-          <div>31</div>
-          <div>1</div>
-          <div>2</div>
-          <div>27</div>
-          <div>28</div>
-          <div>29</div>
-          <div>30</div>
-          <div>31</div>
-          <div>1</div>
-          <div>2</div>
-          <div>27</div>
-          <div>28</div>
-          <div>29</div>
-          <div>30</div>
-          <div>31</div>
-          <div>1</div>
-          <div>2</div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendar</title>
+  <!-- 원하는 폰트와 아이콘을 사용해도 좋다. -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
+  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+  <style>
+    *,
+    *::after,
+    *::before {
+      box-sizing: border-box;
+    }
 
+    h2 {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Open Sans';
+      font-weight: 300;
+    }
+
+    .title {
+      color: #db5b33;
+      font-weight: 300;
+      text-align: center;
+    }
+
+
+
+    /* 뷰를 구현하세요. */
+
+    .calendar {
+      display: none;
+      width: 330px;
+      /* height: 400px; */
+      line-height: 1.4;
+      border-radius: 12px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .date-picker:focus + .calendar {
+      display: block;
+    }
+
+    .calendar-nav {
+      border-radius: 12px 12px 0 0;
+      display: flex;
+      justify-content: space-between;
+      background-color: #03c75a;
+      padding: 16px 24px 8px;
+      color: white;
+    }
+
+    .calendar-title {
+      text-align: center;
+      font-weight: 400;
+      font-size: 20px;
+    }
+
+    .calendar-title>span {
+      font-size: 14px;
+      display: block;
+    }
+
+
+    .button {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .btnPrev {
+      order: -1;
+    }
+
+    .calendar-grid {
+
+      /* box-shadow: 2px 2px 2px gray; */
+    }
+
+    .week,
+    .day {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      /* padding: 1.5em; */
+      /* grid-auto-rows: auto; */
+      /* height: 4.5ch; */
+    }
+
+    .week {
+      margin-top: 12px;
+      padding: 0 16px 0;
+      color: lightgray;
+      font-weight: 400;
+    }
+
+    .day {
+      padding: 16px;
+      grid-gap: 7px 0;
+    }
+
+    .day button {
+      position: relative;
+      border: 0;
+      width: 4.5ch;
+      height: 4.5ch;
+      border-radius: 50%;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .day button:hover {
+      color: white;
+      background-color: #03c75a;
+      border-color: #03c75a;
+    }
+  </style>
+  <!-- <link rel="stylesheet" href="style.css" /> -->
+</head>
+
+<body>
+  <!-- 뷰를 구현하세요 -->
+  <h1 class="title">Calendar</h1>
+  <input class="date-picker" type="text" />
+  <div class="calendar">
+    <div class="calendar-nav">
+      <h2 class="calendar-title">April<span>2021</span></h2>
+      <button class="button btnPrev">◀</button>
+      <button class="button btnNext">▶</button>
     </div>
-  </body>
+    <div class="calendar-grid">
+      <div class="week">
+        <div>SUN</div>
+        <div>SUN</div>
+        <div>SUN</div>
+        <div>SUN</div>
+        <div>SUN</div>
+        <div>SUN</div>
+        <div>SUN</div>
+      </div>
+      <div class="day">
+        <button>
+          <time>1</time>
+        </button><button>
+          <time>2</time>
+        </button><button>
+          <time>3</time>
+        </button><button>
+          <time>4</time>
+        </button><button>
+          <time>5</time>
+        </button><button>
+          <time>6</time>
+        </button><button>
+          <time>7</time>
+        </button><button>
+          <time>8</time>
+        </button><button>
+          <time>9</time>
+        </button><button>
+          <time>10</time>
+        </button><button>
+          <time>11</time>
+        </button><button>
+          <time>12</time>
+        </button><button>
+          <time>13</time>
+        </button><button>
+          <time>14</time>
+        </button><button>
+          <time>15</time>
+        </button><button>
+          <time>16</time>
+        </button><button>
+          <time>17</time>
+        </button><button>
+          <time>18</time>
+        </button><button>
+          <time>19</time>
+        </button><button>
+          <time>20</time>
+        </button><button>
+          <time>21</time>
+        </button><button>
+          <time>22</time>
+        </button><button>
+          <time>23</time>
+        </button><button>
+          <time>24</time>
+        </button><button>
+          <time>25</time>
+        </button><button>
+          <time>26</time>
+        </button><button>
+          <time>27</time>
+        </button><button>
+          <time>28</time>
+        </button><button>
+          <time>29</time>
+        </button><button>
+          <time>30</time>
+        </button><button>
+          <time>31</time>
+        </button><button>
+          <time>32</time>
+        </button><button>
+          <time>33</time>
+        </button><button>
+          <time>34</time>
+        </button><button>
+          <time>35</time>
+        </button><button>
+          <time>36</time>
+        </button><button>
+          <time>37</time>
+        </button><button>
+          <time>38</time>
+        </button><button>
+          <time>39</time>
+        </button><button>
+          <time>40</time>
+        </button><button>
+          <time>41</time>
+        </button><button>
+          <time>42</time>
+        </button>
+      </div>
+    </div>
+</body>
+
 </html>
+
+<!-- <main>
+  <div class="calendar">
+    <div class="month-indicator">
+      <time datetime="2019-02"> February 2019 </time>
+    </div>
+    <div class="day-of-week">
+      <div>Su</div>
+      <div>Mo</div>
+      <div>Tu</div>
+      <div>We</div>
+      <div>Th</div>
+      <div>Fr</div>
+      <div>Sa</div>
+    </div>
+    <div class="date-grid">
+      <button>
+        <time datetime="2019-02-01">1</time>
+      </button>
+      <button>
+        <time datetime="2019-02-02">2</time>
+      </button>
+      <button>
+        <time datetime="2019-02-03">3</time>
+      </button>
+      <button>
+        <time datetime="2019-02-04">4</time>
+      </button>
+      <button>
+        <time datetime="2019-02-05">5</time>
+      </button>
+      <button>
+        <time datetime="2019-02-06">6</time>
+      </button>
+      <button>
+        <time datetime="2019-02-07">7</time>
+      </button>
+      <button>
+        <time datetime="2019-02-08">8</time>
+      </button>
+      <button>
+        <time datetime="2019-02-09">9</time>
+      </button>
+      <button>
+        <time datetime="2019-02-10">10</time>
+      </button>
+      <button>
+        <time datetime="2019-02-11">11</time>
+      </button>
+      <button>
+        <time datetime="2019-02-12">12</time>
+      </button>
+      <button>
+        <time datetime="2019-02-13">13</time>
+      </button>
+      <button>
+        <time datetime="2019-02-14">14</time>
+      </button>
+      <button>
+        <time datetime="2019-02-15">15</time>
+      </button>
+      <button>
+        <time datetime="2019-02-16">16</time>
+      </button>
+      <button>
+        <time datetime="2019-02-17">17</time>
+      </button>
+      <button>
+        <time datetime="2019-02-18">18</time>
+      </button>
+      <button>
+        <time datetime="2019-02-19">19</time>
+      </button>
+      <button>
+        <time datetime="2019-02-20">20</time>
+      </button>
+      <button>
+        <time datetime="2019-02-21">21</time>
+      </button>
+      <button>
+        <time datetime="2019-02-22">22</time>
+      </button>
+      <button>
+        <time datetime="2019-02-23">23</time>
+      </button>
+      <button>
+        <time datetime="2019-02-24">24</time>
+      </button>
+      <button>
+        <time datetime="2019-02-25">25</time>
+      </button>
+      <button>
+        <time datetime="2019-02-26">26</time>
+      </button>
+      <button>
+        <time datetime="2019-02-27">27</time>
+      </button>
+      <button>
+        <time datetime="2019-02-28">28</time>
+      </button>
+    </div>
+  </div>
+</main> -->
