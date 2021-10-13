@@ -35,11 +35,11 @@
         opacity: 0;
       }
       .carousel-slides {
-        --currentSlide: 0.25;
-        /* --duration: 0; */
+        --currentSlide: 0;
+        --duration: 0;
         /* 수평 정렬 */
         display: flex;
-        /* transition: transform calc(var(--duration) * 1ms) ease-out; */
+        transition: transform calc(var(--duration) * 1ms) ease-out;
         transform: translate3D(calc(var(--currentSlide) * -100%), 0, 0);
       }
       .carousel-slides img {
@@ -89,9 +89,22 @@
         const $div = document.createElement('div');
         $div.classList.add('carousel-slides');
         $div.innerHTML = images.map(image => `<img src="${image}">`).join('');
-        console.log($div.innerHTML);
         $container.appendChild($div);
-        console.log($container);
+
+        const $buttonPrevEl = document.createElement('button');
+        const $buttonNextEl = document.createElement('button');
+        $buttonPrevEl.classList.add('carousel-control', 'prev');
+        $buttonPrevEl.innerHTML = '&laquo;';
+        $buttonNextEl.classList.add('carousel-control', 'next');
+        $buttonNextEl.innerHTML = '&raquo;';
+        $container.appendChild($buttonPrevEl);
+        $container.appendChild($buttonNextEl);
+
+        $container.style.setProperty(
+          'width',
+          `${$div.children[0].naturalWidth + $div.children[0].scrollWidth}px`
+        );
+
         $container.style.setProperty('opacity', '1');
       };
 
