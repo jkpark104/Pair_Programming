@@ -158,25 +158,53 @@
     </div>
     -->
     <script>
-      const toaster = /* Do something! */
+      // DOM Nodes
+      const $toast = document.querySelector('.toast');
+      const toaster = {
+        add({ type, title, message }) {
+          console.log(type, title, message);
+        }
+      };
 
       const TOAST_TYPE = {
         SUCCESS: 'success',
         ERROR: 'error',
-        WARNING: 'warning',
+        WARNING: 'warning'
       };
 
-      const createToastAction = (type, title, message) => ({ type, title, message });
+      const createToastAction = (type, title, message) => ({
+        type,
+        title,
+        message
+      });
 
       // Button click Event Handlers
       document.querySelector('.show-success').onclick = () =>
-        toaster.add(createToastAction(TOAST_TYPE.SUCCESS, 'Well done!', 'This is a success alert'));
+        toaster.add(
+          createToastAction(
+            TOAST_TYPE.SUCCESS,
+            'Well done!',
+            'This is a success alert'
+          )
+        );
 
       document.querySelector('.show-error').onclick = () =>
-        toaster.add(createToastAction(TOAST_TYPE.ERROR, 'Check it out!', 'This is a error alert'));
+        toaster.add(
+          createToastAction(
+            TOAST_TYPE.ERROR,
+            'Check it out!',
+            'This is a error alert'
+          )
+        );
 
       document.querySelector('.show-warning').onclick = () =>
-        toaster.add(createToastAction(TOAST_TYPE.WARNING, 'Check it out!', 'This is a warning alert'));
+        toaster.add(
+          createToastAction(
+            TOAST_TYPE.WARNING,
+            'Check it out!',
+            'This is a warning alert'
+          )
+        );
     </script>
   </body>
 </html>
