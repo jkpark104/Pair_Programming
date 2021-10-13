@@ -85,6 +85,20 @@
       <button class="carousel-control next">&raquo;</button> -->
     </div>
     <script>
+      const throttle = (callback, delay) => {
+        let timerId;
+        return event => {
+          if (timerId) return;
+          timerId = setTimeout(
+            () => {
+              callback(event);
+              timerId = null;
+            },
+            delay,
+            event
+          );
+        };
+      };
       const carousel = ($container, images) => {
         const $div = document.createElement('div');
         $div.classList.add('carousel-slides');
@@ -99,13 +113,50 @@
         $buttonNextEl.innerHTML = '&raquo;';
         $container.appendChild($buttonPrevEl);
         $container.appendChild($buttonNextEl);
+        $div.style.setProperty('--currentSlide', '1');
+        $div.style.setProperty('--duration', '500');
 
-        $container.style.setProperty(
-          'width',
-          `${$div.children[0].naturalWidth + $div.children[0].scrollWidth}px`
-        );
+        $div.children[0].onload = () => {
+          $container.style.setProperty(
+            'width',
+            `${$div.children[0].scrollWidth}px`
+          );
+        };
 
         $container.style.setProperty('opacity', '1');
+
+        let currentIdx = 1;
+        $buttonPrevEl.onclick = () => {
+          if (currentIdx === 1) {
+            $div.style.setProperty('--currentSlide', --currentIdx);
+            $div.addEventListener('transitionend', () => {
+              console.log('hi');
+            });
+            // setTimeout(() => {
+            //   currentIdx = $div.children.length - 2;
+            //   $div.style.setProperty('--duration', '0');
+            //   // console.log($div.style.getPropertyValue('--duration'));
+            //   $div.style.setProperty('--currentSlide', currentIdx);
+            // }, 500);
+          } else {
+            $div.style.setProperty('--duration', '500');
+            $div.style.setProperty('--currentSlide', --currentIdx);
+          }
+        };
+
+        // $buttonNextEl.onclick = () => {
+        //   if (currentIdx === $div.children.length - 2) {
+        //     $div.style.setProperty('--currentSlide', ++currentIdx);
+        //     setTimeout(() => {
+        //       currentIdx = 1;
+        //       $div.style.setProperty('--duration', '0');
+        //       // console.log($div.style.getPropertyValue('--duration'));
+        //       $div.style.setProperty('--currentSlide', currentIdx);
+        //     }, 500);
+        //   } else {
+        //     $div.style.setProperty('--duration', '500');
+        //     $div.style.setProperty('--currentSlide', ++currentIdx);
+        //   }
       };
 
       carousel(document.querySelector('.carousel'), [
