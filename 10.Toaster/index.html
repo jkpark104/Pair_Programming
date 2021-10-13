@@ -17,6 +17,7 @@
       }
 
       body {
+        /* overflow: hidden; */
         font-family: 'Open Sans';
         font-weight: 300;
         color: #58666e;
@@ -159,14 +160,27 @@
     -->
     <script>
       // DOM Nodes
+      const $body = document.querySelector('body');
+      $body.style.setProperty('overflow-x', 'hidden');
+
       const toaster = {
         createDOM({ type, title, message }) {
           const $divEl = document.createElement('div');
           $divEl.classList.add('toast', `toast-${type}`);
-          $divEl.style.setProperty(
-            `bottom`,
-            document.querySelectorAll('.toast').length * 100 + 'px'
-          );
+
+          [...document.querySelectorAll('.toast')].forEach((toastEl, index) => {
+            console.log(
+              $divEl.style.setProperty('transform', 'translate3d(0,0,0)')
+            );
+            // toastEl.style.setProperty(
+            //   'transform',
+            //   `translate3d(0, ${index * 100} px , 0)`
+            // );
+          });
+          // $divEl.style.setProperty(
+          //   `bottom`,
+          //   document.querySelectorAll('.toast').length * 100 + 'px'
+          // );
 
           $divEl.innerHTML = `
               <h4 class="toast-heading">${title}</h4>
