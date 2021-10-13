@@ -85,20 +85,6 @@
       <button class="carousel-control next">&raquo;</button> -->
     </div>
     <script>
-      const throttle = (callback, delay) => {
-        let timerId;
-        return event => {
-          if (timerId) return;
-          timerId = setTimeout(
-            () => {
-              callback(event);
-              timerId = null;
-            },
-            delay,
-            event
-          );
-        };
-      };
       const carousel = ($container, images) => {
         const $div = document.createElement('div');
         $div.classList.add('carousel-slides');
@@ -126,22 +112,53 @@
         $container.style.setProperty('opacity', '1');
 
         let currentIdx = 1;
+        let isTransited = false;
         $buttonPrevEl.onclick = () => {
+          if (isTransited) return;
+          isTransited = true;
+          console.log('c', currentIdx);
           if (currentIdx === 1) {
             $div.style.setProperty('--currentSlide', --currentIdx);
+            console.log('b', currentIdx);
             $div.addEventListener('transitionend', () => {
-              console.log('hi');
+              currentIdx = $div.children.length - 2;
+              setTimeout(() => {
+                $div.style.setProperty('--duration', '0');
+                $div.style.setProperty('--currentSlide', --currentIdx);
+                isTransited = false;
+              }, 500);
             });
-            // setTimeout(() => {
-            //   currentIdx = $div.children.length - 2;
-            //   $div.style.setProperty('--duration', '0');
-            //   // console.log($div.style.getPropertyValue('--duration'));
-            //   $div.style.setProperty('--currentSlide', currentIdx);
-            // }, 500);
           } else {
-            $div.style.setProperty('--duration', '500');
+            $div.addEventListener('transitionend', () => {
+            console.log('hi');
             $div.style.setProperty('--currentSlide', --currentIdx);
+            $div.style.setProperty('--duration', '500');
+            isTransited = false;
           }
+        }
+
+          // if (currentIdx === 1) {
+          //   $div.style.setProperty('--currentSlide', --currentIdx);
+          //   console.log(currentIdx, 'b');
+          //   $div.addEventListener('transitionend', () => {
+          //     console.log(currentIdx);
+          //     currentIdx = $div.children.length - 2;
+          //     console.log(currentIdx);
+          //     $div.style.setProperty('--duration', '0');
+          //     $div.style.setProperty('--currentSlide', --currentIdx);
+          //     console.log(isTransited);
+          //     isTransited = false;
+          //   });
+          // } else {
+          //   console.log(currentIdx, 'a');
+          //   console.log(isTransited);
+          //   // $div.addEventListener('transitionend', () => {
+          //   console.log('hi');
+          //   $div.style.setProperty('--currentSlide', --currentIdx);
+          //   $div.style.setProperty('--duration', '500');
+          //   // isTransited = false;
+          //   // });
+          // }
         };
 
         // $buttonNextEl.onclick = () => {
