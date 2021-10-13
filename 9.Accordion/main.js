@@ -2,29 +2,22 @@
 const $accordion = document.querySelector('.accordion');
 const $menuContainer = document.querySelectorAll('.menu-container');
 const $subMenu = document.querySelectorAll('.submenu');
-const active = [true, false, false];
-
-// $menuContainer[0].onclick = () => {
-// active = !active;
-// $subMenu[0].style.height = active ? `${$subMenu[0].scrollHeight}px` : '0';
-// };
 
 const toggleMenuContainer = idx => {
-  // console.log($subMenu[idx]);
-  // $subMenu[idx].classList.toggle('active');
-  // console.log($subMenu[idx]);
-  // if ($subMenu[idx].style.height === '0')
-  // console.log($subMenu[idx].style.height);
-  // else console.log($subMenu[idx].style.height);
-  // $subMenu[idx].style.height = `${$subMenu[idx].scrollHeight}px`;
-  // else $subMenu[idx].style.height = '0';
-  // active[idx] = !active[idx];
-  // $subMenu[idx].style.height = active[idx]
-  //   ? `${$subMenu[idx].scrollHeight}px`
-  //   : '0';
-  // [...$menuContainer].forEach(ele => {
-  //   console.log(ele.style);
-  // });
+  [...$subMenu].forEach((subMneuEl, i) => {
+    if (idx === +i) {
+      if (subMneuEl.style.height.trim().length < 4) {
+        $menuContainer[i].classList.add('active');
+        subMneuEl.style.height = `${$subMenu[idx].scrollHeight}px`;
+      } else {
+        $menuContainer[i].classList.remove('active');
+        subMneuEl.style.height = '0';
+      }
+    } else {
+      $menuContainer[i].classList.remove('active');
+      subMneuEl.style.height = '0';
+    }
+  });
 };
 
 $accordion.onclick = e => {
@@ -42,7 +35,6 @@ $accordion.onclick = e => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-  // $subMenu[0].style.
   $subMenu[0].style.setProperty('transition-duration', '0s');
   $subMenu[0].style.height = `${$subMenu[0].scrollHeight}px`;
 });
