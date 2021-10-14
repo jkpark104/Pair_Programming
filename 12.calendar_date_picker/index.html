@@ -37,19 +37,26 @@
       }
 
       /* 뷰를 구현하세요. */
-
-      .calendar {
-        /* display: none; */
+      .container {
         width: 330px;
-        /* height: 400px; */
-        line-height: 1.4;
-        border-radius: 12px;
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         margin: 0 auto;
       }
 
-      .date-picker:focus + .calendar {
-        /* display: block; */
+      .date-picker {
+        margin-bottom: 8px;
+        height: 32px;
+      }
+
+      .calendar {
+        display: none;
+        width: 330px;
+        line-height: 1.4;
+        border-radius: 12px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      }
+
+      .calendar.active {
+        display: block;
       }
 
       .calendar-nav {
@@ -83,17 +90,10 @@
         order: -1;
       }
 
-      .calendar-grid {
-        /* box-shadow: 2px 2px 2px gray; */
-      }
-
       .week,
       .day {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        /* padding: 1.5em; */
-        /* grid-auto-rows: auto; */
-        /* height: 4.5ch; */
       }
 
       .week {
@@ -118,14 +118,19 @@
         cursor: pointer;
       }
 
-      .day button:hover {
-        color: white;
-        background-color: #03c75a;
-        border-color: #03c75a;
+      .day button.prev,
+      .day button.next {
+        color: lightgray;
       }
 
       .day button.sunday {
         color: red;
+      }
+
+      .day button:hover {
+        color: white;
+        background-color: #03c75a;
+        border-color: #03c75a;
       }
 
       .day button.today {
@@ -140,110 +145,9 @@
   <body>
     <!-- 뷰를 구현하세요 -->
     <h1 class="title">Calendar</h1>
-    <!-- <input class="date-picker" type="text" readonly value="Select Date" /> -->
-    <div class="calendar">
-      <!-- <div class="calendar-nav">
-      <h2 class="calendar-title">April<span>2021</span></h2>
-      <button class="button btnPrev">◀</button>
-      <button class="button btnNext">▶</button>
-    </div>
-    <div class="calendar-grid">
-      <div class="week">
-        <div>SUN</div>
-        <div>SUN</div>
-        <div>SUN</div>
-        <div>SUN</div>
-        <div>SUN</div>
-        <div>SUN</div>
-        <div>SUN</div>
-      </div>
-      <div class="day">
-        <button>
-          <time>1</time>
-        </button><button>
-          <time>2</time>
-        </button><button>
-          <time>3</time>
-        </button><button>
-          <time>4</time>
-        </button class="today"><button>
-          <time>5</time>
-        </button><button>
-          <time>6</time>
-        </button><button>
-          <time>7</time>
-        </button><button>
-          <time>8</time>
-        </button><button>
-          <time>9</time>
-        </button><button>
-          <time>10</time>
-        </button><button>
-          <time>11</time>
-        </button><button>
-          <time>12</time>
-        </button><button>
-          <time>13</time>
-        </button><button>
-          <time>14</timec>
-        </button><button>
-          <time>15</time>
-        </button><button>
-          <time>16</time>
-        </button><button>
-          <time>17</time>
-        </button><button>
-          <time>18</time>
-        </button><button>
-          <time>19</time>
-        </button><button>
-          <time>20</time>
-        </button><button>
-          <time>21</time>
-        </button><button>
-          <time>22</time>
-        </button><button>
-          <time>23</time>
-        </button><button>
-          <time>24</time>
-        </button><button>
-          <time>25</time>
-        </button><button>
-          <time>26</time>
-        </button><button>
-          <time>27</time>
-        </button><button>
-          <time>28</time>
-        </button><button>
-          <time>29</time>
-        </button><button>
-          <time>30</time>
-        </button><button>
-          <time>31</time>
-        </button><button>
-          <time>32</time>
-        </button><button>
-          <time>33</time>
-        </button><button>
-          <time>34</time>
-        </button><button>
-          <time>35</time>
-        </button><button>
-          <time>36</time>
-        </button><button>
-          <time>37</time>
-        </button><button>
-          <time>38</time>
-        </button><button>
-          <time>39</time>
-        </button><button>
-          <time>40</time>
-        </button><button>
-          <time>41</time>
-        </button><button>
-          <time>42</time>
-        </button>
-      </div> -->
+    <div class="container">
+      <input class="date-picker" type="text" readonly value="Select Date" />
+      <div class="calendar"></div>
     </div>
     <script src="./main.js"></script>
   </body>

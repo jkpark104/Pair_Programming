@@ -1,5 +1,6 @@
 // DOM Nodes
 const $calendar = document.querySelector('.calendar');
+const $datePicker = document.querySelector('.date-picker');
 
 const months = [
   'January',
@@ -78,31 +79,32 @@ const getDate = (year, month) => {
 const render = () => {
   dates = [];
   getDate(state.year, state.month);
-  $calendar.innerHTML = ` <input class="date-picker" type="text" readonly value="Select Date" />
+  $calendar.innerHTML = `
   <div class="calendar-nav">
-  <h2 class="calendar-title">${months[state.month]}<span>${
-    state.year
-  }</span></h2>
-  <button class="button btnPrev">◀</button>
-  <button class="button btnNext">▶</button>
-</div>
-<div class="calendar-grid">
-<div class="week">
-  ${daysOfWeek.map(day => `<div>${day}</div>`).join('')}
+    <h2 class="calendar-title">
+      ${months[state.month]}<span>${state.year}</span>
+    </h2>
+    <button class="button btnPrev">◀</button>
+    <button class="button btnNext">▶</button>
   </div>
-<div class="day">
-  ${dates
-    .map(
-      ({ key, date, monthStatus, today, sunday }) =>
-        `<button>
-      <time datatime = "${key}">${date}</time>
-    </button>`
-    )
-    .join('')}
-</div>
-</div>
-`;
-  // console.log($calendar.innerHTML);
+  <div class="calendar-grid">
+  <div class="week">
+    ${daysOfWeek.map(day => `<div>${day}</div>`).join('')}
+  </div>
+  <div class="day">
+      ${dates
+        .map(
+          ({ key, date, monthStatus, today, sunday }) => `
+          <button class="${monthStatus === 'current' ? '' : monthStatus} ${
+            today ? 'today' : ''
+          } ${sunday ? 'sunday' : ''}
+          }">
+            <time datatime = "${key}"> ${date}</time> 
+          </button>`
+        )
+        .join('')} 
+    </div> 
+  </div>`;
 };
 
 const changeMonth = indicator => {
@@ -120,4 +122,17 @@ window.addEventListener('DOMContentLoaded', () => {
 document.onclick = e => {
   if (e.target.classList.contains('btnNext')) changeMonth(1);
   else if (e.target.classList.contains('btnPrev')) changeMonth(-1);
+};
+
+document.addEventListener('click', e => {
+  console.log(
+    e.target.closest('.day'),
+    e.target.closest('.calendar-nav'),
+    e.target.closest('.calendar-grid'),
+    e.target === $datePicker
+  );
+});
+
+$datePicker.onfocus = () => {
+  $calendar.classList.add('active');
 };
