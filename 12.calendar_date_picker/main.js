@@ -23,7 +23,7 @@ const state = {
   year: new Date().getFullYear()
 };
 
-const dates = [];
+let dates = [];
 
 // console.log(new Date(state.year, state.month).getDay());
 // console.log(new Date(state.year, state.month, 0).getDate());
@@ -45,6 +45,7 @@ const getDate = (year, month) => {
     const key = convertDateFormat(new Date(year, month - 1, prevMonthDate));
     dates.push({
       key,
+      date: prevMonthDate,
       monthStatus: 'prev'
     });
   }
@@ -54,6 +55,7 @@ const getDate = (year, month) => {
     const key = new Date(year, month, i);
     dates.push({
       key: convertDateFormat(key),
+      date: i,
       monthStatus: 'current',
       today: new Date().getDate() === i ? 'today' : '',
       sunday: key.getDay() === 0 ? 'sunday' : ''
@@ -65,15 +67,43 @@ const getDate = (year, month) => {
     const key = convertDateFormat(new Date(year, month + 1, i));
     dates.push({
       key,
+      date: i,
       monthStatus: 'next'
     });
   }
 };
 
-getDate(state.year, state.month);
-console.log(dates);
+// console.log(dates);
 
-const render = () => {};
+const render = () => {
+  dates = [];
+  getDate(state.year, state.month);
+  $calendar.innerHTML = ` <input class="date-picker" type="text" readonly value="Select Date" />
+  <div class="calendar-nav">
+  <h2 class="calendar-title">${months[state.month]}<span>${
+    state.year
+  }</span></h2>
+  <button class="button btnPrev">◀</button>
+  <button class="button btnNext">▶</button>
+</div>
+<div class="calendar-grid">
+<div class="week">
+  ${daysOfWeek.map(day => `<div>${day}</div>`).join('')}
+  </div>
+<div class="day">
+  ${dates
+    .map(
+      ({ key, date, monthStatus, today, sunday }) =>
+        `<button>
+      <time datatime = "${key}">${date}</time>
+    </button>`
+    )
+    .join('')}
+</div>
+</div>
+`;
+  // console.log($calendar.innerHTML);
+};
 
 const changeMonth = indicator => {
   const date = new Date(state.year, state.month + indicator);
