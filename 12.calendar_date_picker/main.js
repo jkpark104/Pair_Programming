@@ -95,10 +95,9 @@ const render = () => {
       ${dates
         .map(
           ({ key, date, monthStatus, today, sunday }) => `
-          <button class="${monthStatus === 'current' ? '' : monthStatus} ${
-            today ? 'today' : ''
-          } ${sunday ? 'sunday' : ''}
-          }">
+          <button class="${monthStatus === 'current' ? '' : monthStatus}${
+            today ? 'is-selected' : ''
+          }${sunday ? 'sunday' : ''}">
             <time datatime = "${key}"> ${date}</time> 
           </button>`
         )
@@ -122,15 +121,19 @@ window.addEventListener('DOMContentLoaded', () => {
 document.onclick = e => {
   if (e.target.classList.contains('btnNext')) changeMonth(1);
   else if (e.target.classList.contains('btnPrev')) changeMonth(-1);
+
+  console.log(e.target.matches('time'), e.target, e.target.matches('button'));
 };
 
 document.addEventListener('click', e => {
-  console.log(
-    e.target.closest('.day'),
-    e.target.closest('.calendar-nav'),
-    e.target.closest('.calendar-grid'),
+  if (
+    e.target.closest('.day') ||
+    e.target.closest('.calendar-nav') ||
+    e.target.closest('.calendar-grid') ||
     e.target === $datePicker
-  );
+  )
+    return;
+  $calendar.classList.remove('active');
 });
 
 $datePicker.onfocus = () => {
