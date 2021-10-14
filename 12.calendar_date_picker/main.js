@@ -29,134 +29,51 @@ const dates = [];
 // console.log(new Date(state.year, state.month, 0).getDate());
 
 // Function
-const getDate = (month, year) => {
+const format = n => (n < 10 ? '0' + n : n + '');
+
+const convertDateFormat = date =>
+  `${date.getFullYear()}-${format(date.getMonth() + 1)}-${format(
+    date.getDate()
+  )}`;
+
+const getDate = (year, month) => {
   const firstDayOfMonth = new Date(year, month).getDay();
-  const lastDateOfMonth = new Date(year, month, 0).getDate();
+  const lastDateOfPrevMonth = new Date(year, month, 0).getDate();
 
   for (let i = 1; i <= firstDayOfMonth; i++) {
-    const prevMonthDate = lastDateOfMonth - firstDayOfMonth + i;
+    const prevMonthDate = lastDateOfPrevMonth - firstDayOfMonth + i;
+    const key = convertDateFormat(new Date(year, month - 1, prevMonthDate));
     dates.push({
-      key: `${year},${month - 1},${prevMonthDate}`
+      key,
+      monthStatus: 'prev'
+    });
+  }
+
+  const lastDateOfThisMonth = new Date(year, month + 1, 0).getDate();
+  for (let i = 1; i <= lastDateOfThisMonth; i++) {
+    const key = new Date(year, month, i);
+    dates.push({
+      key: convertDateFormat(key),
+      monthStatus: 'current',
+      today: new Date().getDate() === i ? 'today' : '',
+      sunday: key.getDay() === 0 ? 'sunday' : ''
     });
   }
 
   const lastDayOfMonth = new Date(year, month + 1, 0).getDay();
   for (let i = 1; i <= 6 - lastDayOfMonth; i++) {
+    const key = convertDateFormat(new Date(year, month + 1, i));
     dates.push({
-      key: `${year},${month + 1}, ${i}`
+      key,
+      monthStatus: 'next'
     });
   }
 };
 
-getDate(state.month, state.year);
+getDate(state.year, state.month);
 console.log(dates);
-const render = () => {
-  $calendar.innerHTML = `
-  <div class="calendar-nav">
-  <h2 class="calendar-title">${months[state.month]}<span>${
-    state.year
-  }</span></h2>
-  <button class="button btnPrev">◀</button>
-  <button class="button btnNext">▶</button>
-</div>
-<div class="calendar-grid">
-  <div class="week">
-    <div>SUN</div>
-    <div>SUN</div>
-    <div>SUN</div>
-    <div>SUN</div>
-    <div>SUN</div>
-    <div>SUN</div>
-    <div>SUN</div>
-  </div>
-  <div class="day">
-    <button>
-      <time>1</time>
-    </button><button>
-      <time>2</time>
-    </button><button>
-      <time>3</time>
-    </button><button>
-      <time>4</time>
-    </button><button>
-      <time>5</time>
-    </button><button>
-      <time>6</time>
-    </button><button>
-      <time>7</time>
-    </button><button>
-      <time>8</time>
-    </button><button>
-      <time>9</time>
-    </button><button>
-      <time>10</time>
-    </button><button>
-      <time>11</time>
-    </button><button>
-      <time>12</time>
-    </button><button>
-      <time>13</time>
-    </button><button>
-      <time>14</time>
-    </button><button>
-      <time>15</time>
-    </button><button>
-      <time>16</time>
-    </button><button>
-      <time>17</time>
-    </button><button>
-      <time>18</time>
-    </button><button>
-      <time>19</time>
-    </button><button>
-      <time>20</time>
-    </button><button>
-      <time>21</time>
-    </button><button>
-      <time>22</time>
-    </button><button>
-      <time>23</time>
-    </button><button>
-      <time>24</time>
-    </button><button>
-      <time>25</time>
-    </button><button>
-      <time>26</time>
-    </button><button>
-      <time>27</time>
-    </button><button>
-      <time>28</time>
-    </button><button>
-      <time>29</time>
-    </button><button>
-      <time>30</time>
-    </button><button>
-      <time>31</time>
-    </button><button>
-      <time>32</time>
-    </button><button>
-      <time>33</time>
-    </button><button>
-      <time>34</time>
-    </button><button>
-      <time>35</time>
-    </button><button>
-      <time>36</time>
-    </button><button>
-      <time>37</time>
-    </button><button>
-      <time>38</time>
-    </button><button>
-      <time>39</time>
-    </button><button>
-      <time>40</time>
-    </button><button>
-      <time>41</time>
-    </button><button>
-      <time>42</time>
-    </button>
-  </div>`;
-};
+
+const render = () => {};
 
 const changeMonth = indicator => {
   const date = new Date(state.year, state.month + indicator);
@@ -167,7 +84,6 @@ const changeMonth = indicator => {
 
 // Event Binding
 window.addEventListener('DOMContentLoaded', () => {
-  console.log();
   render();
 });
 
