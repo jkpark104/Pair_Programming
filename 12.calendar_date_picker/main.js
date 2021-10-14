@@ -113,6 +113,11 @@ const changeMonth = indicator => {
   render();
 };
 
+const pickDate = el => {
+  document.querySelector('.is-selected').classList.remove('is-selected');
+  el.classList.add('is-selected');
+};
+
 // Event Binding
 window.addEventListener('DOMContentLoaded', () => {
   render();
@@ -121,8 +126,8 @@ window.addEventListener('DOMContentLoaded', () => {
 document.onclick = e => {
   if (e.target.classList.contains('btnNext')) changeMonth(1);
   else if (e.target.classList.contains('btnPrev')) changeMonth(-1);
-
-  console.log(e.target.matches('time'), e.target, e.target.matches('button'));
+  else if (e.target.matches('time')) pickDate(e.target.parentNode);
+  else if (e.target.matches('button')) pickDate(e.target);
 };
 
 document.addEventListener('click', e => {
