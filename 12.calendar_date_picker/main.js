@@ -23,24 +23,33 @@ const state = {
   year: new Date().getFullYear()
 };
 
-const date = [];
+const dates = [];
 
 // console.log(new Date(state.year, state.month).getDay());
 // console.log(new Date(state.year, state.month, 0).getDate());
 
 // Function
 const getDate = (month, year) => {
-  const firstDayOfMonth = new Date(state.year, state.month).getDay();
-  const lastDateOfMonth = new Date(state.year, state.month, 0).getDate();
+  const firstDayOfMonth = new Date(year, month).getDay();
+  const lastDateOfMonth = new Date(year, month, 0).getDate();
 
   for (let i = 1; i <= firstDayOfMonth; i++) {
     const prevMonthDate = lastDateOfMonth - firstDayOfMonth + i;
-    console.log(prevMonthDate);
+    dates.push({
+      key: `${year},${month - 1},${prevMonthDate}`
+    });
+  }
+
+  const lastDayOfMonth = new Date(year, month + 1, 0).getDay();
+  for (let i = 1; i <= 6 - lastDayOfMonth; i++) {
+    dates.push({
+      key: `${year},${month + 1}, ${i}`
+    });
   }
 };
 
 getDate(state.month, state.year);
-
+console.log(dates);
 const render = () => {
   $calendar.innerHTML = `
   <div class="calendar-nav">
@@ -158,6 +167,7 @@ const changeMonth = indicator => {
 
 // Event Binding
 window.addEventListener('DOMContentLoaded', () => {
+  console.log();
   render();
 });
 
