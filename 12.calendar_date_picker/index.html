@@ -1,136 +1,137 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendar</title>
+    <!-- 원하는 폰트와 아이콘을 사용해도 좋다. -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::after,
+      *::before {
+        box-sizing: border-box;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calendar</title>
-  <!-- 원하는 폰트와 아이콘을 사용해도 좋다. -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
-  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
-  <style>
-    *,
-    *::after,
-    *::before {
-      box-sizing: border-box;
-    }
+      h2 {
+        margin: 0;
+        padding: 0;
+      }
 
-    h2 {
-      margin: 0;
-      padding: 0;
-    }
+      body {
+        font-family: 'Open Sans';
+        font-weight: 300;
+      }
 
-    body {
-      font-family: 'Open Sans';
-      font-weight: 300;
-    }
+      .title {
+        color: #db5b33;
+        font-weight: 300;
+        text-align: center;
+      }
 
-    .title {
-      color: #db5b33;
-      font-weight: 300;
-      text-align: center;
-    }
+      /* 뷰를 구현하세요. */
 
+      .calendar {
+        display: none;
+        width: 330px;
+        /* height: 400px; */
+        line-height: 1.4;
+        border-radius: 12px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      }
 
+      .date-picker:focus + .calendar {
+        display: block;
+      }
 
-    /* 뷰를 구현하세요. */
+      .calendar-nav {
+        border-radius: 12px 12px 0 0;
+        display: flex;
+        justify-content: space-between;
+        background-color: #03c75a;
+        padding: 16px 24px 8px;
+        color: white;
+      }
 
-    .calendar {
-      display: none;
-      width: 330px;
-      /* height: 400px; */
-      line-height: 1.4;
-      border-radius: 12px;
-      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    }
+      .calendar-title {
+        text-align: center;
+        font-weight: 400;
+        font-size: 20px;
+      }
 
-    .date-picker:focus + .calendar {
-      display: block;
-    }
+      .calendar-title > span {
+        font-size: 14px;
+        display: block;
+      }
 
-    .calendar-nav {
-      border-radius: 12px 12px 0 0;
-      display: flex;
-      justify-content: space-between;
-      background-color: #03c75a;
-      padding: 16px 24px 8px;
-      color: white;
-    }
+      .button {
+        border: 0;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+      }
 
-    .calendar-title {
-      text-align: center;
-      font-weight: 400;
-      font-size: 20px;
-    }
+      .btnPrev {
+        order: -1;
+      }
 
-    .calendar-title>span {
-      font-size: 14px;
-      display: block;
-    }
+      .calendar-grid {
+        /* box-shadow: 2px 2px 2px gray; */
+      }
 
+      .week,
+      .day {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        /* padding: 1.5em; */
+        /* grid-auto-rows: auto; */
+        /* height: 4.5ch; */
+      }
 
-    .button {
-      border: 0;
-      background: transparent;
-      color: inherit;
-      cursor: pointer;
-    }
+      .week {
+        margin-top: 12px;
+        padding: 0 16px 0;
+        color: lightgray;
+        font-weight: 400;
+      }
 
-    .btnPrev {
-      order: -1;
-    }
+      .day {
+        padding: 16px;
+        grid-gap: 7px 0;
+      }
 
-    .calendar-grid {
+      .day button {
+        position: relative;
+        border: 0;
+        width: 4.5ch;
+        height: 4.5ch;
+        border-radius: 50%;
+        background-color: transparent;
+        cursor: pointer;
+      }
 
-      /* box-shadow: 2px 2px 2px gray; */
-    }
+      .day button:hover {
+        color: white;
+        background-color: #03c75a;
+        border-color: #03c75a;
+      }
+    </style>
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+  </head>
 
-    .week,
-    .day {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      /* padding: 1.5em; */
-      /* grid-auto-rows: auto; */
-      /* height: 4.5ch; */
-    }
-
-    .week {
-      margin-top: 12px;
-      padding: 0 16px 0;
-      color: lightgray;
-      font-weight: 400;
-    }
-
-    .day {
-      padding: 16px;
-      grid-gap: 7px 0;
-    }
-
-    .day button {
-      position: relative;
-      border: 0;
-      width: 4.5ch;
-      height: 4.5ch;
-      border-radius: 50%;
-      background-color: transparent;
-      cursor: pointer;
-    }
-
-    .day button:hover {
-      color: white;
-      background-color: #03c75a;
-      border-color: #03c75a;
-    }
-  </style>
-  <!-- <link rel="stylesheet" href="style.css" /> -->
-</head>
-
-<body>
-  <!-- 뷰를 구현하세요 -->
-  <h1 class="title">Calendar</h1>
-  <input class="date-picker" type="text" />
-  <div class="calendar">
-    <div class="calendar-nav">
+  <body>
+    <!-- 뷰를 구현하세요 -->
+    <h1 class="title">Calendar</h1>
+    <input class="date-picker" type="text" readonly value="Select Date" />
+    <div class="calendar">
+      <!-- <div class="calendar-nav">
       <h2 class="calendar-title">April<span>2021</span></h2>
       <button class="button btnPrev">◀</button>
       <button class="button btnNext">▶</button>
@@ -231,10 +232,10 @@
         </button><button>
           <time>42</time>
         </button>
-      </div>
+      </div> -->
     </div>
-</body>
-
+    <script src="./main.js"></script>
+  </body>
 </html>
 
 <!-- <main>
