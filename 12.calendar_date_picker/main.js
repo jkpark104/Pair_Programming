@@ -23,7 +23,24 @@ const state = {
   year: new Date().getFullYear()
 };
 
+const date = [];
+
+// console.log(new Date(state.year, state.month).getDay());
+// console.log(new Date(state.year, state.month, 0).getDate());
+
 // Function
+const getDate = (month, year) => {
+  const firstDayOfMonth = new Date(state.year, state.month).getDay();
+  const lastDateOfMonth = new Date(state.year, state.month, 0).getDate();
+
+  for (let i = 1; i <= firstDayOfMonth; i++) {
+    const prevMonthDate = lastDateOfMonth - firstDayOfMonth + i;
+    console.log(prevMonthDate);
+  }
+};
+
+getDate(state.month, state.year);
+
 const render = () => {
   $calendar.innerHTML = `
   <div class="calendar-nav">
@@ -132,7 +149,19 @@ const render = () => {
   </div>`;
 };
 
+const changeMonth = indicator => {
+  const date = new Date(state.year, state.month + indicator);
+  state.year = date.getFullYear();
+  state.month = date.getMonth();
+  render();
+};
+
+// Event Binding
 window.addEventListener('DOMContentLoaded', () => {
   render();
-  console.log(state);
 });
+
+document.onclick = e => {
+  if (e.target.classList.contains('btnNext')) changeMonth(1);
+  else if (e.target.classList.contains('btnPrev')) changeMonth(-1);
+};
