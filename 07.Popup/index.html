@@ -33,7 +33,7 @@
 
       /* 팝업을 위한 CSS */
       /* 모달 */
-      .modal-container-container {
+      .modal-container {
         display: none;
         background: rgba(0, 0, 0, 0.75);
         position: fixed;
@@ -42,10 +42,10 @@
         top: 0;
         right: 0;
       }
-      .modal-container-container.active {
+      .modal-container.active {
         display: block;
       }
-      .modal-container {
+      .modal {
         max-width: 520px;
         min-height: 200px;
         margin: 0 auto;
@@ -86,8 +86,8 @@
     <h1 class="title">Popup</h1>
     <!-- 팝업을 위한 HTML -->
     <button class="toggle-popup" type="button">toggle popup</button>
-    <div class="modal-container-container">
-      <div class="modal-container" role="dialog">
+    <div class="modal-container">
+      <div class="modal" role="dialog">
         <h2 class="modal-title">Hello!</h2>
         <p class="modal-content">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi
@@ -95,15 +95,13 @@
           numquam, voluptate Alias voluptatibus eius. Quam dicta, earum quisquam
           numquam Architecto eius sed?
         </p>
-        <div class="button-group">
-          <input type="text" class="input-message" />
-          <button class="button-ok" type="button">OK</button>
-          <button class="button-cancel" type="button">Cancel</button>
-        </div>
-        <button class="button-exit" type="button">&#215;</button>
+        <input type="text" class="input-message" />
+        <button class="button button-ok" type="button">OK</button>
+        <button class="button button-cancel" type="button">Cancel</button>
+        <button class="button button-exit" type="button">&#215;</button>
       </div>
     </div>
     <p class="popup-message"></p>
-    <script src="./main.js"></script>
+    <script src="js/app.mjs"></script>
   </body>
 </html>
