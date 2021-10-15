@@ -84,6 +84,10 @@
     </style>
   </head>
   <body>
+    <script>
+      const state = JSON.parse(localStorage.getItem('toggleStatus'));
+      document.querySelector('body').classList.toggle('dark', state);
+    </script>
     <h1 class="title">Dark Mode</h1>
     <div class="toggle-button">
       <div class="toggle-button-switch"></div>
@@ -102,6 +106,6 @@
       repellat velit voluptatum accusantium aperiam. Nostrum sunt reprehenderit
       nemo!
     </article>
+    <script type="module" src="js/app.mjs"></script>
   </body>
-  <script src="./main.js"></script>
 </html>
