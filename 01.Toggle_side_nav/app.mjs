@@ -15,10 +15,6 @@ const initNavState = () => {
   if (!getNavState()) setNavState(false);
 
   slideNavigation(getNavState());
-
-  setTimeout(() => {
-    [$main, $nav, $toggle].forEach($el => $el.classList.remove('notransition'));
-  }, 0.1);
 };
 
 const toggleNavState = () => {
@@ -29,5 +25,9 @@ const toggleNavState = () => {
 
 // // Event bindings -------------------
 window.addEventListener('DOMContentLoaded', initNavState);
+
+window.onload = () => {
+  [$main, $nav, $toggle].forEach($el => $el.classList.remove('notransition'));
+};
 
 $toggle.onclick = toggleNavState;
