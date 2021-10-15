@@ -3,6 +3,7 @@ const $increaseButton = document.querySelector('.increase');
 const $counterDisplay = document.querySelector('.counter');
 const $decreaseButton = document.querySelector('.decrease');
 
+// Function------------------------
 const counter = (function () {
   let num = 0;
 

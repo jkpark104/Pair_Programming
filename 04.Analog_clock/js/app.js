@@ -1,20 +1,22 @@
 // DOM Nodes --------------
-const $second = document.querySelector('.hand.second');
-const $minute = document.querySelector('.hand.minute');
 const $hour = document.querySelector('.hand.hour');
+const $minute = document.querySelector('.hand.minute');
+const $second = document.querySelector('.hand.second');
 
-// function --------------
-(function printNow() {
+// Function------------------------
+const timeCalculate = () => {
   const today = new Date();
-  let hour = today.getHours();
+
+  const hour = today.getHours() % 12;
   const minute = today.getMinutes();
   const second = today.getSeconds();
-  hour %= 12;
-  hour = hour || 12;
 
-  $hour.style.setProperty('--deg', 30 * hour);
-  $minute.style.setProperty('--deg', 6 * minute);
+  $hour.style.setProperty('--deg', 30 * hour + 0.5 * minute);
+  $minute.style.setProperty('--deg', 6 * minute + 0.1 * second);
   $second.style.setProperty('--deg', 6 * second);
 
-  setTimeout(printNow, 1000);
-})();
+  setTimeout(timeCalculate, 1000);
+};
+
+// Event Binding------------------
+window.addEventListener('DOMContentLoaded', timeCalculate);
