@@ -1,9 +1,14 @@
-import { setNavState, getNavState } from './localStroage.mjs';
-
 // DOM Nodes--------------------
 const $nav = document.querySelector('.container nav');
 const $main = document.querySelector('.container main');
 const $toggle = document.querySelector('.toggle');
+
+// Function----------------------
+const setNavState = newState => {
+  localStorage.setItem('isNavFolded', newState);
+};
+
+const getNavState = () => JSON.parse(localStorage.getItem('isNavFolded'));
 
 const slideNavigation = isNavFolded => {
   $nav.classList.toggle('active', isNavFolded);
