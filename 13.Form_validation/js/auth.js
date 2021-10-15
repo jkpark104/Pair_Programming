@@ -3,7 +3,7 @@ const $signInUserId = document.getElementById('signin-userid');
 const $signInPassword = document.getElementById('signin-password');
 const $signInButton = document.querySelector('.signin button');
 const $signInForm = document.forms[0];
-// const $signUpForm = document.forms[1];
+const $signUpForm = document.forms[1];
 
 let isValidId = false;
 let isValidPw = false;
@@ -140,4 +140,20 @@ $signInForm.onsubmit = e => {
   toaster.add(
     createToastAction(TOAST_TYPE.SUCCESS, 'Well done!', 'Signin Successfully')
   );
+  console.log(window.location.search);
 };
+
+const $links = document.querySelectorAll('.link');
+
+$links[0].onclick = () => {
+  $signInForm.hidden = true;
+  $signUpForm.hidden = false;
+};
+
+$links[1].onclick = () => {
+  $signInForm.hidden = false;
+  $signUpForm.hidden = true;
+};
+
+// const $signInForm
+// const $signUpForm
