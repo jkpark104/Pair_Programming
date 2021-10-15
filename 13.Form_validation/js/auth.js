@@ -3,7 +3,7 @@ const $signInUserId = document.getElementById('signin-userid');
 const $signInPassword = document.getElementById('signin-password');
 const $signInButton = document.querySelector('.signin button');
 const $signInForm = document.forms[0];
-const $signUpForm = document.forms[1];
+// const $signUpForm = document.forms[1];
 
 let isValidId = false;
 let isValidPw = false;
