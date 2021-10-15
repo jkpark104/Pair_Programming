@@ -1,7 +1,7 @@
 // DOM Nodes ----------------
-const $increase = document.querySelector('.increase');
+const $increaseButton = document.querySelector('.increase');
 const $counter = document.querySelector('.counter');
-const $decrease = document.querySelector('.decrease');
+const $decreaseButton = document.querySelector('.decrease');
 
 // function------------------
 const countingStatus = (function () {
@@ -18,9 +18,9 @@ const countingStatus = (function () {
 })();
 
 // Event binding -------------------
-$increase.onclick = () => {
+$increaseButton.onclick = () => {
   $counter.textContent = countingStatus.increase();
 };
-$decrease.onclick = () => {
+$decreaseButton.onclick = () => {
   $counter.textContent = countingStatus.decrease();
 };
