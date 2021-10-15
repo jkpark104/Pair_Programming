@@ -1,5 +1,6 @@
 // DOM Nodes
 const $tabs = document.querySelector('.tabs');
+const $spinner = document.querySelector('.spinner');
 // fetch fake data
 // eslint-disable-next-line arrow-body-style
 const fetchTabsData = () => {
@@ -27,57 +28,60 @@ const fetchTabsData = () => {
 
 const createNav = tabContent => {
   const $navEl = document.createElement('nav');
+
   $navEl.innerHTML = `${tabContent
     .map(
-      ({ title }, index) =>
-        `<div class="tab" data-index="${index + 1}">${title}</div>`
+      ({ title }, i) => `<div class="tab" data-index="${i + 1}">${title}</div>`
     )
     .join('')} 
-    <span class="glider"></span>`;
+      <span class="glider"></span>`;
+
   return $navEl;
 };
 
 const createTabContent = tabContent =>
   tabContent.map(({ content }, i) => {
-    const $div = document.createElement('div');
-    if (i === 0) {
-      $div.classList.add('tab-content', 'active');
-    } else {
-      $div.classList.add('tab-content');
-    }
-    $div.appendChild(document.createTextNode(content));
-    return $div;
+    const $divEl = document.createElement('div');
+
+    i === 0
+      ? $divEl.classList.add('tab-content', 'active')
+      : $divEl.classList.add('tab-content');
+
+    $divEl.innerHTML = content;
+
+    return $divEl;
   });
 
-const render = domEls => {
-  const $tabs = document.querySelector('.tabs');
-  domEls.forEach(domEl => {
-    $tabs.appendChild(domEl);
+const render = elments => {
+  elments.forEach(element => {
+    $tabs.appendChild(element);
   });
-  $tabs.style.setProperty('--tabs-length', domEls.length - 1);
+  $tabs.style.setProperty('--tabs-length', elments.length - 1);
 };
 
-const beActiveTabContent = index => {
-  const $tabContents = document.querySelectorAll('.tab-content');
-  const $glider = document.querySelector('.glider');
-  [...$tabContents].forEach((content, idx) => {
-    +index === idx + 1
-      ? content.classList.add('active')
-      : content.classList.remove('active');
-  });
-
-  $glider.style.setProperty('left', `calc(var(--tab-width) * ${index - 1}px`);
+const beActiveTabContent = (index, target) => {
+  const tabContents = document.querySelectorAll('.tab-content');
+  [...tabContents].forEach((el, i) =>
+    el.classList.toggle('active', i + 1 === +index)
+  );
+  // [...navElments].forEach(el => {
+  //   el.matches('.glider')
+  //     ? el.style.setProperty('left', `calc(var(--tab-width) * ${index}px`)
+  //     : el.classList.toggle('active', el === target);
+  // });
 };
 
 // Event binding
 window.addEventListener(
   'DomContentLoaded',
   fetchTabsData().then(resolve => {
-    document.querySelector('.spinner').style.opacity = '0';
+    $spinner.style.opacity = '0';
     render([createNav(resolve), ...createTabContent(resolve)]);
-    const $nav = document.querySelector('nav');
-    $nav.onclick = e => {
-      beActiveTabContent(e.target.dataset.index);
-    };
   })
 );
+
+$tabs.onclick = e => {
+  if (!e.target.matches('.tab')) return;
+
+  beActiveTabContent(e.target.dataset.index, e.target);
+};
