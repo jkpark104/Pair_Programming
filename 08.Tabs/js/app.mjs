@@ -1,5 +1,5 @@
 // DOM Nodes
-
+const $tabs = document.querySelector('.tabs');
 // fetch fake data
 // eslint-disable-next-line arrow-body-style
 const fetchTabsData = () => {
@@ -25,20 +25,16 @@ const fetchTabsData = () => {
   });
 };
 
-// DOM Nodes
 const createNav = tabContent => {
-  const $nav = document.createElement('nav');
-  tabContent.forEach(({ title }, i) => {
-    const $div = document.createElement('div');
-    $div.classList.add('tab');
-    $div.dataset.index = i + 1;
-    $div.appendChild(document.createTextNode(title));
-    $nav.appendChild($div);
-  });
-  const $span = document.createElement('span');
-  $span.classList.add('glider');
-  $nav.appendChild($span);
-  return $nav;
+  const $navEl = document.createElement('nav');
+  $navEl.innerHTML = `${tabContent
+    .map(
+      ({ title }, index) =>
+        `<div class="tab" data-index="${index + 1}">${title}</div>`
+    )
+    .join('')} 
+    <span class="glider"></span>`;
+  return $navEl;
 };
 
 const createTabContent = tabContent =>
@@ -77,7 +73,7 @@ const beActiveTabContent = index => {
 window.addEventListener(
   'DomContentLoaded',
   fetchTabsData().then(resolve => {
-    document.querySelector('.spinner').style.display = 'none';
+    document.querySelector('.spinner').style.opacity = '0';
     render([createNav(resolve), ...createTabContent(resolve)]);
     const $nav = document.querySelector('nav');
     $nav.onclick = e => {
