@@ -22,6 +22,7 @@
       body {
         font-family: 'Open Sans';
         font-weight: 300;
+        opacity: 0;
       }
       .title {
         color: #db5b33;
@@ -84,10 +85,6 @@
     </style>
   </head>
   <body>
-    <script>
-      const state = JSON.parse(localStorage.getItem('toggleStatus'));
-      document.querySelector('body').classList.toggle('dark', state);
-    </script>
     <h1 class="title">Dark Mode</h1>
     <div class="toggle-button">
       <div class="toggle-button-switch"></div>

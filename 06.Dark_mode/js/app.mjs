@@ -16,7 +16,11 @@ const toggleMode = state => $body.classList.toggle('dark', state);
 window.addEventListener('DOMContentLoaded', () => {
   getStatus() ? (state = JSON.parse(getStatus())) : setStatus(state);
   toggleMode(state);
+  setTimeout(() => {
+    $body.style.opacity = '1';
+  }, 300);
 });
+
 $toggleBtn.onclick = () => {
   state = !JSON.parse(getStatus());
   setStatus(state);
