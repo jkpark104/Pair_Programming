@@ -1,24 +1,22 @@
 // DOM Nodes ---------------
 const $display = document.querySelector('.display');
+const [$playButton, $resetButton] = document.querySelectorAll('.control');
 
 // function ----------------
-const render = time => {
-  $display.textContent = time;
-};
-
 const convertToTime = ms => {
   const min = Math.floor(ms / 1000 / 60);
   const sec = Math.floor((ms / 1000) % 60);
   const millis = Math.floor((ms % 1000) / 10);
 
   const format = n => (n < 10 ? '0' + n : n + '');
+
   return `${format(min)}:${format(sec)}:${format(millis)}`;
 };
 
 const Stopwatch = {
-  initMillis: new Date(),
+  initMillis: 0,
 
-  isStop: false,
+  state: 'stop',
 
   laps: [],
 
@@ -26,23 +24,58 @@ const Stopwatch = {
     this.laps = [];
   },
 
-  getTime() {
+  start() {
+    this.state = 'start';
+    this.initMillis = new Date();
+
+    $playButton.textContent = 'Stop';
+    $resetButton.textContent = 'Laps';
+
     return setInterval(() => {
-      if (this.isStop) return;
+      if (this.state === 'stop') return;
+
       $display.textContent = convertToTime(new Date() - this.initMillis);
     }, 10);
   },
 
+  stop() {
+    this.state = 'stop';
+    $playButton.textContent = 'Start';
+    $resetButton.textContent = 'Reset';
+  },
+
   getLaps() {
-    this.laps = [...this.laps, this.initMillis];
+    this.laps = [...this.laps, new Date() - this.initMillis];
+
+    console.log(
+      this.laps
+        .map(
+          (lap, i) => `
+    <div>${i + 1}</div>
+    <div>${convertToTime(lap)}</div>
+  `
+        )
+        .join('')
+    );
   }
 };
+
+// Event Binding------------
+$playButton.onclick = () => {
+  Stopwatch.state === 'stop' ? Stopwatch.start() : Stopwatch.stop();
+};
+
+$resetButton.onclick = () => {
+  Stopwatch.state === 'stop' ? Stopwatch.reset() : Stopwatch.getLaps();
+};
+
+//--------------------------
 
 // $display.onclick = () => {
 //   console.log('hi');
 // };
 
-console.log(Stopwatch.getTime());
+// console.log(Stopwatch.getTime());
 
 // setInterval(() => {
 //   console.log(timer.getTime());
@@ -60,16 +93,6 @@ console.log(Stopwatch.getTime());
 // let timeInterval = null;
 
 // function --------------
-// const getTime = ms => {
-//   let _ms = ms;
-//   const minute = Math.floor(_ms / (1000 * 60));
-//   _ms -= 1000 * 60 * minute;
-//   const second = Math.floor(_ms / 1000);
-//   _ms -= 1000 * second;
-//   const format = n => (n < 10 ? '0' + n : n + '');
-//   return `${format(minute)}:${format(second)}:${format(Math.floor(_ms / 10))}`;
-// };
-
 // const timer = () => {
 //   const now = new Date();
 //   $display.textContent = getTime(now - startTime);

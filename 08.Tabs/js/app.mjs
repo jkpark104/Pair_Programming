@@ -26,49 +26,32 @@ const fetchTabsData = () => {
   });
 };
 
-const createNav = tabContent => {
-  const $navEl = document.createElement('nav');
-
-  $navEl.innerHTML = `${tabContent
+const render = tabContents => {
+  $tabs.innerHTML = `
+  <nav>
+    ${tabContents
+      .map(
+        ({ title }, i) => `<div class="tab" data-index="${i}">${title}</div>`
+      )
+      .join('')}
+    <span class="glider"></span>
+  </nav>
+  ${tabContents
     .map(
-      ({ title }, i) => `<div class="tab" data-index="${i + 1}">${title}</div>`
+      ({ content }, i) =>
+        `<div class="tab-content ${i === 0 ? 'active' : ''}" >${content}</div>`
     )
-    .join('')} 
-      <span class="glider"></span>`;
-
-  return $navEl;
+    .join('')}
+  `;
+  $tabs.style.setProperty('--tabs-length', tabContents.length);
 };
 
-const createTabContent = tabContent =>
-  tabContent.map(({ content }, i) => {
-    const $divEl = document.createElement('div');
-
-    i === 0
-      ? $divEl.classList.add('tab-content', 'active')
-      : $divEl.classList.add('tab-content');
-
-    $divEl.innerHTML = content;
-
-    return $divEl;
-  });
-
-const render = elments => {
-  elments.forEach(element => {
-    $tabs.appendChild(element);
-  });
-  $tabs.style.setProperty('--tabs-length', elments.length - 1);
-};
-
-const beActiveTabContent = (index, target) => {
+const beActiveTabContent = index => {
   const tabContents = document.querySelectorAll('.tab-content');
-  [...tabContents].forEach((el, i) =>
-    el.classList.toggle('active', i + 1 === +index)
+
+  [...tabContents].forEach((tabContent, i) =>
+    tabContent.classList.toggle('active', i === +index)
   );
-  // [...navElments].forEach(el => {
-  //   el.matches('.glider')
-  //     ? el.style.setProperty('left', `calc(var(--tab-width) * ${index}px`)
-  //     : el.classList.toggle('active', el === target);
-  // });
 };
 
 // Event binding
@@ -76,12 +59,18 @@ window.addEventListener(
   'DomContentLoaded',
   fetchTabsData().then(resolve => {
     $spinner.style.opacity = '0';
-    render([createNav(resolve), ...createTabContent(resolve)]);
+    render(resolve);
   })
 );
 
 $tabs.onclick = e => {
   if (!e.target.matches('.tab')) return;
 
-  beActiveTabContent(e.target.dataset.index, e.target);
+  beActiveTabContent(e.target.dataset.index);
 };
+
+// [...navElments].forEach(el => {
+//   el.matches('.glider')
+//     ? el.style.setProperty('left', `calc(var(--tab-width) * ${index}px`)
+//     : el.classList.toggle('active', el === target);
+// });
