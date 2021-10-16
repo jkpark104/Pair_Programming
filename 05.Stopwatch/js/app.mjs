@@ -47,16 +47,17 @@ const Stopwatch = {
   getLaps() {
     this.laps = [...this.laps, new Date() - this.initMillis];
 
-    console.log(
-      this.laps
-        .map(
-          (lap, i) => `
-    <div>${i + 1}</div>
-    <div>${convertToTime(lap)}</div>
-  `
-        )
-        .join('')
-    );
+    const $newEl = document.createDocumentFragment();
+    this.laps.forEach((lap, i) => {});
+
+    // const $el = document.createElement('div');
+    // this.laps
+    //   .map(
+    //     (lap, i) =>
+    //       `<div>${i + 1}</div>
+    //        <div>${convertToTime(lap)}</div>`
+    //   )
+    //   .join('')
   }
 };
 

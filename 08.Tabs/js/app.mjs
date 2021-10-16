@@ -31,26 +31,35 @@ const render = tabContents => {
   <nav>
     ${tabContents
       .map(
-        ({ title }, i) => `<div class="tab" data-index="${i}">${title}</div>`
+        ({ title }, i) => `
+          <div class="tab" data-index="${i}">
+            ${title}
+          </div>`
       )
       .join('')}
-    <span class="glider"></span>
+      <span class="glider"></span>
   </nav>
   ${tabContents
     .map(
       ({ content }, i) =>
-        `<div class="tab-content ${i === 0 ? 'active' : ''}" >${content}</div>`
+        `
+        <div class="tab-content ${i === 0 ? 'active' : ''}" >
+          ${content}
+        </div>`
     )
     .join('')}
   `;
+
   $tabs.style.setProperty('--tabs-length', tabContents.length);
 };
 
 const beActiveTabContent = index => {
-  const tabContents = document.querySelectorAll('.tab-content');
+  const $glider = document.querySelector('.glider');
+  $glider.style.setProperty('left', `calc(var(--tab-width) * ${index}px`);
 
-  [...tabContents].forEach((tabContent, i) =>
-    tabContent.classList.toggle('active', i === +index)
+  const $tabContents = document.querySelectorAll('.tab-content');
+  [...$tabContents].forEach(($tabContent, i) =>
+    $tabContent.classList.toggle('active', i === +index)
   );
 };
 
@@ -64,11 +73,5 @@ window.addEventListener(
 );
 
 $tabs.onclick = e => {
-  document
-    .querySelector('.glider')
-    .style.setProperty(
-      'left',
-      `calc(var(--tab-width) * ${e.target.dataset.index}px`
-    );
   beActiveTabContent(e.target.dataset.index);
 };
