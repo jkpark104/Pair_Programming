@@ -1,84 +1,36 @@
-// <!--
-// toast-success =>
-// <div class="toast toast-success"">
-//   <h4 class="toast-heading">Title</h4>
-//   <div class="toast-message">
-//     <svg width="24" height="24">
-//       <use xlink:href="#success" />
-//     </svg>
-//     <p>Message</p>
-//   </div>
-//   <a class="close">&times;</a>
-// </div>
-
-// toast-error =>
-// <div class="toast toast-error"">
-//   <h4 class="toast-heading">Title</h4>
-//   <div class="toast-message">
-//     <svg width="24" height="24">
-//       <use xlink:href="#error" />
-//     </svg>
-//     <p>Message</p>
-//   </div>
-//   <a class="close">&times;</a>
-// </div>
-
-// toast-warning =>
-// <div class="toast toast-warning"">
-//   <h4 class="toast-heading">Title</h4>
-//   <div class="toast-message">
-//     <svg width="24" height="24">
-//       <use xlink:href="#warning" />
-//     </svg>
-//     <p>Message</p>
-//   </div>
-//   <a class="close">&times;</a>
-// </div>
-// -->
 // DOM Nodes
 const $body = document.querySelector('body');
-$body.style.setProperty('overflow-x', 'hidden');
 
-const toaster = {
-  createDOM({ type, title, message }) {
-    const $divEl = document.createElement('div');
-    $divEl.classList.add('toast', `toast-${type}`);
+const createToast = ({ type, title, message }) => {
+  const $toast = document.createElement('div');
+  $toast.classList.add('toast', `toast-${type}`);
 
-    $divEl.innerHTML = `
-          <h4 class="toast-heading">${title}</h4>
-          <div class="toast-message">
-            <svg width="24" height="24">
-              <use xlink:href="#${type}" />
-            </svg>
-            <p>${message}</p>
-          </div>
-          <a class="close">&times;</a>`;
-    return $divEl;
-  },
-
-  add(toastAction) {
-    const $toast = this.createDOM(toastAction);
-    document.querySelector('body').appendChild($toast);
-    [...document.querySelectorAll('.toast')].forEach(
-      (toastEl, index, thisArr) => {
-        toastEl.style.setProperty(
-          'bottom',
-          `${(thisArr.length - (index + 1)) * 100}px`
-        );
-      }
-    );
-    setTimeout(() => this.remove($toast), 3000);
-  },
-
-  remove(toastEl) {
-    toastEl.remove();
-  }
+  $toast.innerHTML = `
+        <h4 class="toast-heading">${title}</h4>
+        <div class="toast-message">
+          <svg width="24" height="24">
+            <use xlink:href="#${type}" />
+          </svg>
+          <p>${message}</p>
+        </div>
+        <a class="close">&times;</a>`;
+  return $toast;
 };
 
-// // $divEl.style.setProperty(
-// //   `bottom`,
-// //   document.querySelectorAll('.toast').length * 100 + 'px'
-// // );
+const toaster = {
+  add(toastAction) {
+    const $newToast = createToast(toastAction);
+    $body.appendChild($newToast);
+
+    const $toasts = [...document.querySelectorAll('.toast')];
+
+    $toasts.forEach(($toast, index) => {
+      $toast.style.bottom = `${($toasts.length - (index + 1)) * 100}px`;
+    });
+
+    setTimeout(() => $newToast.remove(), 3000);
+  }
+};
 
 const TOAST_TYPE = {
   SUCCESS: 'success',
@@ -91,6 +43,16 @@ const createToastAction = (type, title, message) => ({
   title,
   message
 });
+
+window.addEventListener('DOMContentLoaded', () => {
+  $body.style.setProperty('overflow-x', 'hidden');
+});
+
+window.onclick = e => {
+  if (!e.target.matches('.close')) return;
+
+  e.target.closest('.toast').remove();
+};
 
 // Button click Event Handlers
 document.querySelector('.show-success').onclick = () =>

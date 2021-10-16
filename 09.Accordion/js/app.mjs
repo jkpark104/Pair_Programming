@@ -18,14 +18,6 @@ const toggleMenuContainer = idx => {
   });
 };
 
-$accordion.onclick = e => {
-  if (!e.target.closest('div').matches('.menu')) return;
-
-  toggleMenuContainer(
-    [...$menuContainers].indexOf(e.target.closest('.menu-container'))
-  );
-};
-
 window.addEventListener('DOMContentLoaded', () => {
   $body.style.opacity = '0';
 
@@ -38,3 +30,11 @@ window.addEventListener('DOMContentLoaded', () => {
     $body.style.opacity = '1';
   }, 400);
 });
+
+$accordion.onclick = e => {
+  if (!e.target.closest('div').matches('.menu')) return;
+
+  toggleMenuContainer(
+    [...$menuContainers].indexOf(e.target.closest('.menu-container'))
+  );
+};
