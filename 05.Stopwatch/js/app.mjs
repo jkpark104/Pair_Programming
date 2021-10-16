@@ -1,8 +1,15 @@
 // DOM Nodes ---------------
 const $display = document.querySelector('.display');
 const [$playButton, $resetButton] = document.querySelectorAll('.control');
+const $laps = document.querySelector('.laps');
 
 // function ----------------
+const initLaps = () => {
+  [...$laps.children].forEach($lap => {
+    $lap.matches('.lap-title') ? ($lap.style.display = 'none') : $lap.remove();
+  });
+};
+
 const convertToTime = ms => {
   const min = Math.floor(ms / 1000 / 60);
   const sec = Math.floor((ms / 1000) % 60);
@@ -21,15 +28,27 @@ const Stopwatch = {
   laps: [],
 
   reset() {
+    this.initMillis = 0;
+
+    $display.textContent = convertToTime(0);
+
     this.laps = [];
+
+    initLaps();
+
+    $resetButton.disabled = true;
   },
 
   start() {
+    this.initMillis === 0
+      ? (this.initMillis = new Date())
+      : (this.initMillis = new Date() - this.initMillis);
+
     this.state = 'start';
-    this.initMillis = new Date();
 
     $playButton.textContent = 'Stop';
     $resetButton.textContent = 'Laps';
+    $resetButton.disabled = false;
 
     return setInterval(() => {
       if (this.state === 'stop') return;
@@ -40,24 +59,30 @@ const Stopwatch = {
 
   stop() {
     this.state = 'stop';
+    this.initMillis = new Date() - this.initMillis;
     $playButton.textContent = 'Start';
     $resetButton.textContent = 'Reset';
   },
 
   getLaps() {
+    [...$laps.children].forEach($lap => {
+      if ($lap.matches('.lap-title')) $lap.style.display = 'grid';
+    });
+
     this.laps = [...this.laps, new Date() - this.initMillis];
 
-    const $newEl = document.createDocumentFragment();
-    this.laps.forEach((lap, i) => {});
+    const $el = document.createDocumentFragment();
 
-    // const $el = document.createElement('div');
-    // this.laps
-    //   .map(
-    //     (lap, i) =>
-    //       `<div>${i + 1}</div>
-    //        <div>${convertToTime(lap)}</div>`
-    //   )
-    //   .join('')
+    $laps.appendChild($el);
+    const $divEl = document.createElement('div');
+    $divEl.innerHTML = `<div>${this.laps.length}</div>`;
+    const $divEl2 = document.createElement('div');
+    $divEl2.innerHTML = `<div>${convertToTime(this.laps.at(-1))}</div>`;
+
+    $el.appendChild($divEl);
+    $el.appendChild($divEl2);
+
+    $laps.appendChild($el);
   }
 };
 
@@ -70,83 +95,8 @@ $resetButton.onclick = () => {
   Stopwatch.state === 'stop' ? Stopwatch.reset() : Stopwatch.getLaps();
 };
 
-//--------------------------
+window.addEventListener('DOMContentLoaded', () => {
+  initLaps();
 
-// $display.onclick = () => {
-//   console.log('hi');
-// };
-
-// console.log(Stopwatch.getTime());
-
-// setInterval(() => {
-//   console.log(timer.getTime());
-// }, 10);
-
-// Event Binding------------
-
-// DOM Nodes --------------
-// const [$playButton, $resetButton] = document.querySelectorAll('.control');
-// const $laps = document.querySelector('.laps');
-// const $display = document.querySelector('.display');
-// let startTime = new Date();
-// let intervalController = null;
-// let laps = 1;
-// let timeInterval = null;
-
-// function --------------
-// const timer = () => {
-//   const now = new Date();
-//   $display.textContent = getTime(now - startTime);
-//   timeInterval = now - startTime;
-// };
-
-// const reset = () => {
-//   [...$laps.children].forEach($lap => {
-//     $lap.classList.contains('lap-title')
-//       ? ($lap.style.display = 'none')
-//       : $lap.remove();
-//   });
-// };
-
-// // Event Binding
-// $playButton.onclick = () => {
-//   if ($playButton.textContent === 'Start') {
-//     $playButton.textContent = 'Stop';
-//     $resetButton.textContent = 'Lap';
-//     $resetButton.disabled = false;
-//     if (timeInterval) startTime = new Date() - timeInterval;
-//     else startTime = new Date();
-//     intervalController = setInterval(timer, 10);
-//   } else {
-//     $playButton.textContent = 'Start';
-//     $resetButton.textContent = 'Reset';
-//     clearInterval(intervalController);
-//   }
-// };
-
-// $resetButton.onclick = () => {
-//   if ($resetButton.textContent === 'Lap') {
-//     [...$laps.children].forEach($lap => {
-//       if ($lap.classList.contains('lap-title')) $lap.style.display = 'grid';
-//     });
-//     const $el = document.createElement('div');
-//     $el.appendChild(document.createTextNode(laps++));
-//     $laps.appendChild($el);
-//     const $el2 = document.createElement('div');
-//     $el2.appendChild(document.createTextNode($display.textContent));
-//     $laps.appendChild($el2);
-//   } else {
-//     $resetButton.disabled = 'true';
-//     laps = 1;
-//     startTime = new Date();
-//     timeInterval = null;
-//     $display.textContent = getTime(0);
-//     reset();
-//   }
-// };
-
-// window.addEventListener('DOMContentLoaded', () => {
-//   [...$laps.children].forEach($lap => {
-//     if ($lap.classList.contains('lap-title')) $lap.style.display = 'none';
-//   });
-// });
+  $resetButton.disabled = true;
+});

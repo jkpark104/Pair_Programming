@@ -4,16 +4,16 @@ const $accordion = document.querySelector('.accordion');
 const $menuContainers = document.querySelectorAll('.menu-container');
 const $subMenus = document.querySelectorAll('.submenu');
 
-const toggleMenuContainer = idx => {
+const toggleMenuContainer = target => {
   $menuContainers.forEach(($menuContainer, i) => {
-    idx === i
+    target === i
       ? $menuContainer.classList.toggle('active')
       : $menuContainer.classList.remove('active');
   });
 
   $subMenus.forEach($subMenu => {
     $subMenu.parentNode.matches('.active')
-      ? ($subMenu.style.height = `${$subMenu.scrollHeight}px`)
+      ? ($subMenu.style.height = $subMenu.scrollHeight + 'px')
       : ($subMenu.style.height = 0);
   });
 };
@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   [...$subMenus].forEach($subMenu => {
     if ($subMenu.parentNode.matches('.active'))
-      $subMenu.style.setProperty('height', `${$subMenu.scrollHeight}px`);
+      $subMenu.style.height = $subMenu.scrollHeight + 'px';
   });
 
   setTimeout(() => {

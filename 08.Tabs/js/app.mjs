@@ -43,7 +43,7 @@ const render = tabContents => {
     .map(
       ({ content }, i) =>
         `
-        <div class="tab-content ${i === 0 ? 'active' : ''}" >
+        <div class="tab-content ${i === 0 ? 'active' : ''}">
           ${content}
         </div>`
     )
@@ -55,7 +55,7 @@ const render = tabContents => {
 
 const beActiveTabContent = index => {
   const $glider = document.querySelector('.glider');
-  $glider.style.setProperty('left', `calc(var(--tab-width) * ${index}px`);
+  $glider.style.left = `calc(var(--tab-width) * ${index}px`;
 
   const $tabContents = document.querySelectorAll('.tab-content');
   [...$tabContents].forEach(($tabContent, i) =>
