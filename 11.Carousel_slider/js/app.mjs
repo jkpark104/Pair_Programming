@@ -1,3 +1,7 @@
+const $carousel = document.querySelector('.carousel');
+let _isTransited = false;
+let _currentIdx = 1;
+
 // Functions-------------------------------
 const carousel = ($container, images) => {
   $container.innerHTML = `<div class="carousel-slides">
@@ -15,44 +19,6 @@ const carousel = ($container, images) => {
     $container.style.width = `${$div.firstElementChild.scrollWidth}px`;
   };
   $container.style.opacity = '1';
-
-  const [$buttonPrevEl, $buttonNextEl] = document.querySelectorAll('button');
-  let currentIdx = 1;
-  let isTransited = false;
-
-  $div.addEventListener('transitionend', () => {
-    if (currentIdx === 0) {
-      currentIdx = $div.children.length - 1;
-      $div.style.setProperty('--duration', '0.1');
-      $div.style.setProperty('--currentSlide', --currentIdx);
-      setTimeout(() => {
-        $div.style.setProperty('--duration', '500');
-        isTransited = false;
-      }, 0.001);
-    } else if (currentIdx === $div.children.length - 1) {
-      currentIdx = 0;
-      $div.style.setProperty('--duration', '0.1');
-      $div.style.setProperty('--currentSlide', ++currentIdx);
-      setTimeout(() => {
-        $div.style.setProperty('--duration', '500');
-        isTransited = false;
-      }, 0.001);
-    } else {
-      isTransited = false;
-    }
-  });
-
-  $buttonPrevEl.onclick = () => {
-    if (isTransited) return;
-    isTransited = true;
-    $div.style.setProperty('--currentSlide', --currentIdx);
-  };
-
-  $buttonNextEl.onclick = () => {
-    if (isTransited) return;
-    isTransited = true;
-    $div.style.setProperty('--currentSlide', ++currentIdx);
-  };
 };
 
 carousel(document.querySelector('.carousel'), [
@@ -61,3 +27,36 @@ carousel(document.querySelector('.carousel'), [
   'movies/movie-3.jpg',
   'movies/movie-4.jpg'
 ]);
+
+const slideImage = (carouselSlides, incDesc) => {
+  if (_currentIdx === 1 || _currentIdx === 4)
+    carouselSlides.style.setProperty('--duration', '500');
+  _currentIdx += incDesc;
+  carouselSlides.style.setProperty('--currentSlide', _currentIdx);
+};
+
+$carousel.onclick = e => {
+  if (!e.target.matches('button')) return;
+  if (_isTransited) return;
+
+  _isTransited = true;
+
+  e.target.matches('.prev')
+    ? slideImage(e.target.parentNode.firstChild, -1)
+    : slideImage(e.target.parentNode.firstChild, 1);
+};
+
+$carousel.addEventListener('transitionend', e => {
+  if (!e.target.matches('.carousel-slides')) return;
+
+  if (+e.target.style.getPropertyValue('--currentSlide') === 0) {
+    e.target.style.setProperty('--duration', '0');
+    e.target.style.setProperty('--currentSlide', '4');
+    _currentIdx = 4;
+  } else if (+e.target.style.getPropertyValue('--currentSlide') === 5) {
+    e.target.style.setProperty('--duration', '0');
+    e.target.style.setProperty('--currentSlide', '1');
+    _currentIdx = 1;
+  }
+  _isTransited = false;
+});
