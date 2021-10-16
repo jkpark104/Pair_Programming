@@ -64,13 +64,11 @@ window.addEventListener(
 );
 
 $tabs.onclick = e => {
-  if (!e.target.matches('.tab')) return;
-
+  document
+    .querySelector('.glider')
+    .style.setProperty(
+      'left',
+      `calc(var(--tab-width) * ${e.target.dataset.index}px`
+    );
   beActiveTabContent(e.target.dataset.index);
 };
-
-// [...navElments].forEach(el => {
-//   el.matches('.glider')
-//     ? el.style.setProperty('left', `calc(var(--tab-width) * ${index}px`)
-//     : el.classList.toggle('active', el === target);
-// });
