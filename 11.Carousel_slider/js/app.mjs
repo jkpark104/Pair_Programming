@@ -1,29 +1,22 @@
+// Functions-------------------------------
 const carousel = ($container, images) => {
-  const $div = document.createElement('div');
-  $div.classList.add('carousel-slides');
-  const imageDOM = images.map(image => `<img src="${image}">`);
-  $div.innerHTML = [imageDOM[images.length - 1], ...imageDOM, imageDOM[0]].join(
-    ''
-  );
-  $container.appendChild($div);
-
-  const $buttonPrevEl = document.createElement('button');
-  const $buttonNextEl = document.createElement('button');
-  $buttonPrevEl.classList.add('carousel-control', 'prev');
-  $buttonPrevEl.innerHTML = '&laquo;';
-  $buttonNextEl.classList.add('carousel-control', 'next');
-  $buttonNextEl.innerHTML = '&raquo;';
-  $container.appendChild($buttonPrevEl);
-  $container.appendChild($buttonNextEl);
+  $container.innerHTML = `<div class="carousel-slides">
+  ${[images[images.length - 1], ...images, images[0]]
+    .map(image => `<img src="${image}"></img>`)
+    .join('')}
+    </div>
+    <button class="carousel-control prev">&laquo;</button>
+    <button class="carousel-control next">&raquo;</button>
+    `;
+  const $div = $container.firstElementChild;
   $div.style.setProperty('--currentSlide', '1');
   $div.style.setProperty('--duration', '500');
-
-  $div.children[0].onload = () => {
-    $container.style.setProperty('width', `${$div.children[0].scrollWidth}px`);
+  $div.firstElementChild.onload = () => {
+    $container.style.width = `${$div.firstElementChild.scrollWidth}px`;
   };
+  $container.style.opacity = '1';
 
-  $container.style.setProperty('opacity', '1');
-
+  const [$buttonPrevEl, $buttonNextEl] = document.querySelectorAll('button');
   let currentIdx = 1;
   let isTransited = false;
 
