@@ -1,6 +1,13 @@
 const $carousel = document.querySelector('.carousel');
+
 let _isTransited = false;
 let _currentIdx = 1;
+
+const setCarouselProperty = properties => {
+  Object.keys(properties).forEach(key => {
+    $carousel.firstChild.style.setProperty(`--${key}`, properties[key]);
+  });
+};
 
 // Functions-------------------------------
 const carousel = ($container, images) => {
@@ -13,8 +20,8 @@ const carousel = ($container, images) => {
     <button class="carousel-control next">&raquo;</button>
     `;
   const $div = $container.firstElementChild;
-  $div.style.setProperty('--currentSlide', '1');
-  $div.style.setProperty('--duration', '500');
+  setCarouselProperty({ currentSlide: 1, duration: 500 });
+
   $div.firstElementChild.onload = () => {
     $container.style.width = `${$div.firstElementChild.scrollWidth}px`;
   };
@@ -30,9 +37,9 @@ carousel(document.querySelector('.carousel'), [
 
 const slideImage = (carouselSlides, incDesc) => {
   if (_currentIdx === 1 || _currentIdx === 4)
-    carouselSlides.style.setProperty('--duration', '500');
+    setCarouselProperty({ duration: 500 });
   _currentIdx += incDesc;
-  carouselSlides.style.setProperty('--currentSlide', _currentIdx);
+  setCarouselProperty({ currentSlide: _currentIdx });
 };
 
 $carousel.onclick = e => {
@@ -46,17 +53,15 @@ $carousel.onclick = e => {
     : slideImage(e.target.parentNode.firstChild, 1);
 };
 
-$carousel.addEventListener('transitionend', e => {
+$carousel.ontransitionend = e => {
   if (!e.target.matches('.carousel-slides')) return;
 
   if (+e.target.style.getPropertyValue('--currentSlide') === 0) {
-    e.target.style.setProperty('--duration', '0');
-    e.target.style.setProperty('--currentSlide', '4');
+    setCarouselProperty({ currentSlide: 4, duration: 0 });
     _currentIdx = 4;
   } else if (+e.target.style.getPropertyValue('--currentSlide') === 5) {
-    e.target.style.setProperty('--duration', '0');
-    e.target.style.setProperty('--currentSlide', '1');
+    setCarouselProperty({ currentSlide: 1, duration: 0 });
     _currentIdx = 1;
   }
   _isTransited = false;
-});
+};
