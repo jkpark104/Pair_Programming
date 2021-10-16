@@ -1,16 +1,53 @@
 // DOM Nodes ---------------
+const $display = document.querySelector('.display');
 
 // function ----------------
-const timer = {
-  initialTime: 0,
+const render = time => {
+  $display.textContent = time;
+};
+
+const convertToTime = ms => {
+  const min = Math.floor(ms / 1000 / 60);
+  const sec = Math.floor((ms / 1000) % 60);
+  const millis = Math.floor((ms % 1000) / 10);
+
+  const format = n => (n < 10 ? '0' + n : n + '');
+  return `${format(min)}:${format(sec)}:${format(millis)}`;
+};
+
+const Stopwatch = {
+  initMillis: new Date(),
+
+  isStop: false,
+
   laps: [],
+
   reset() {
     this.laps = [];
   },
+
   getTime() {
-    return new Date() - this.initialTime;
+    return setInterval(() => {
+      if (this.isStop) return;
+      $display.textContent = convertToTime(new Date() - this.initMillis);
+    }, 10);
+  },
+
+  getLaps() {
+    this.laps = [...this.laps, this.initMillis];
   }
 };
+
+// $display.onclick = () => {
+//   console.log('hi');
+// };
+
+console.log(Stopwatch.getTime());
+
+// setInterval(() => {
+//   console.log(timer.getTime());
+// }, 10);
+
 // Event Binding------------
 
 // DOM Nodes --------------
