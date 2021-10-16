@@ -1,7 +1,14 @@
 const $carousel = document.querySelector('.carousel');
 
-let _isTransited = false;
-let _currentIdx = 1;
+const MOVE_BACKWARD = -1;
+const MOVE_FORWARD = 1;
+
+let transitionEnd = false;
+let slideOrder = 1;
+
+const whetherBothEnds = () =>
+  slideOrder === 0 ||
+  slideOrder === $carousel.querySelectorAll('img').length - 1;
 
 const setCarouselProperty = properties => {
   Object.keys(properties).forEach(key => {
@@ -11,57 +18,59 @@ const setCarouselProperty = properties => {
 
 // Functions-------------------------------
 const carousel = ($container, images) => {
-  $container.innerHTML = `<div class="carousel-slides">
-  ${[images[images.length - 1], ...images, images[0]]
-    .map(image => `<img src="${image}"></img>`)
-    .join('')}
+  const imageGroup = [images[images.length - 1], ...images, images[0]];
+
+  $container.innerHTML = `
+    <div class="carousel-slides">
+      ${imageGroup.map(image => `<img src="${image}"></img>`).join('')}
     </div>
     <button class="carousel-control prev">&laquo;</button>
     <button class="carousel-control next">&raquo;</button>
-    `;
-  const $div = $container.firstElementChild;
-  setCarouselProperty({ currentSlide: 1, duration: 500 });
+    `.trim();
 
-  $div.firstElementChild.onload = () => {
-    $container.style.width = `${$div.firstElementChild.scrollWidth}px`;
-  };
-  $container.style.opacity = '1';
+  $carousel.style.opacity = '1';
+  setCarouselProperty({ currentSlide: 1, duration: 500 });
 };
 
-carousel(document.querySelector('.carousel'), [
+carousel($carousel, [
   'movies/movie-1.jpg',
   'movies/movie-2.jpg',
   'movies/movie-3.jpg',
   'movies/movie-4.jpg'
 ]);
 
-const slideImage = (carouselSlides, incDesc) => {
-  if (_currentIdx === 1 || _currentIdx === 4)
-    setCarouselProperty({ duration: 500 });
-  _currentIdx += incDesc;
-  setCarouselProperty({ currentSlide: _currentIdx });
+window.onload = () => {
+  const slideWidth = $carousel.firstElementChild.firstElementChild.scrollWidth;
+
+  $carousel.style.width = slideWidth + 'px';
+};
+
+const slideImage = backAndForth => {
+  if (!whetherBothEnds()) setCarouselProperty({ duration: 500 });
+
+  slideOrder += backAndForth;
+  setCarouselProperty({ currentSlide: slideOrder });
 };
 
 $carousel.onclick = e => {
   if (!e.target.matches('button')) return;
-  if (_isTransited) return;
+  if (transitionEnd) return;
 
-  _isTransited = true;
+  transitionEnd = true;
 
   e.target.matches('.prev')
-    ? slideImage(e.target.parentNode.firstChild, -1)
-    : slideImage(e.target.parentNode.firstChild, 1);
+    ? slideImage(MOVE_BACKWARD)
+    : slideImage(MOVE_FORWARD);
 };
 
 $carousel.ontransitionend = e => {
   if (!e.target.matches('.carousel-slides')) return;
 
-  if (+e.target.style.getPropertyValue('--currentSlide') === 0) {
-    setCarouselProperty({ currentSlide: 4, duration: 0 });
-    _currentIdx = 4;
-  } else if (+e.target.style.getPropertyValue('--currentSlide') === 5) {
-    setCarouselProperty({ currentSlide: 1, duration: 0 });
-    _currentIdx = 1;
-  }
-  _isTransited = false;
+  transitionEnd = false;
+
+  if (!whetherBothEnds()) return;
+
+  const slideLastIndex = $carousel.querySelectorAll('img').length - 1;
+  slideOrder = Math.abs(slideOrder - slideLastIndex + 1);
+  setCarouselProperty({ currentSlide: slideOrder, duration: 0 });
 };
