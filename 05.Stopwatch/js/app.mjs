@@ -1,10 +1,13 @@
+// Constant Number
+const EXCUTE_AFTER_MILLISECOND = 10;
+
 // DOM Nodes ---------------
 const $display = document.querySelector('.display');
 const [$playButton, $resetButton] = document.querySelectorAll('.control');
 const $laps = document.querySelector('.laps');
 
 // function ----------------
-const initLaps = () => {
+const clearLaps = () => {
   [...$laps.children].forEach($lap => {
     $lap.matches('.lap-title') ? ($lap.style.display = 'none') : $lap.remove();
   });
@@ -21,28 +24,28 @@ const convertToTime = ms => {
 };
 
 const Stopwatch = {
-  initMillis: 0,
+  initMillis: null,
 
   state: 'stop',
 
   laps: [],
 
   reset() {
-    this.initMillis = 0;
+    this.initMillis = null;
 
     $display.textContent = convertToTime(0);
 
     this.laps = [];
 
-    initLaps();
+    clearLaps();
 
     $resetButton.disabled = true;
   },
 
   start() {
-    this.initMillis === 0
-      ? (this.initMillis = new Date())
-      : (this.initMillis = new Date() - this.initMillis);
+    this.initMillis >= 0
+      ? (this.initMillis = new Date() - this.initMillis)
+      : (this.initMillis = new Date());
 
     this.state = 'start';
 
@@ -54,7 +57,7 @@ const Stopwatch = {
       if (this.state === 'stop') return;
 
       $display.textContent = convertToTime(new Date() - this.initMillis);
-    }, 10);
+    }, EXCUTE_AFTER_MILLISECOND);
   },
 
   stop() {
@@ -71,18 +74,15 @@ const Stopwatch = {
 
     this.laps = [...this.laps, new Date() - this.initMillis];
 
-    const $el = document.createDocumentFragment();
+    const $domFragment = document.createDocumentFragment();
 
-    $laps.appendChild($el);
-    const $divEl = document.createElement('div');
-    $divEl.innerHTML = `<div>${this.laps.length}</div>`;
-    const $divEl2 = document.createElement('div');
-    $divEl2.innerHTML = `<div>${convertToTime(this.laps.at(-1))}</div>`;
+    [this.laps.length, convertToTime(this.laps.at(-1))].forEach(info => {
+      const $div = document.createElement('div');
+      $div.appendChild(document.createTextNode(info));
+      $domFragment.appendChild($div);
+    });
 
-    $el.appendChild($divEl);
-    $el.appendChild($divEl2);
-
-    $laps.appendChild($el);
+    $laps.appendChild($domFragment);
   }
 };
 
@@ -96,7 +96,7 @@ $resetButton.onclick = () => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-  initLaps();
+  clearLaps();
 
   $resetButton.disabled = true;
 });

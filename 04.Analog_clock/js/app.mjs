@@ -1,7 +1,5 @@
 // DOM Nodes --------------
-const $hour = document.querySelector('.hand.hour');
-const $minute = document.querySelector('.hand.minute');
-const $second = document.querySelector('.hand.second');
+const [$hour, $minute, $second] = document.querySelectorAll('.hand');
 
 // Function------------------------
 const timeCalculate = () => {

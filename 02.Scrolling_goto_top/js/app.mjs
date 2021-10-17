@@ -1,8 +1,10 @@
 // DOM Nodes--------------------
 const $scrollIcon = document.querySelector('.scroll-icon');
 
-// Event Binding----------------
+// Constant Number-------------
 const EXECUTE_AFTER_MILLISECOND = 100;
+
+// Event Binding----------------
 
 window.onscroll = _.throttle(() => {
   window.pageYOffset > 300
