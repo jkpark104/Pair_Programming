@@ -5,7 +5,6 @@ const $body = document.querySelector('body');
 let isDarkMode = false;
 
 const getMode = () => JSON.parse(localStorage.getItem('isDarkMode'));
-
 const toggleMode = isDarkMode => $body.classList.toggle('dark', isDarkMode);
 
 // Event bindings -------------------
@@ -17,9 +16,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   toggleMode(isDarkMode);
 
+  const EXECUTE_AFTER_MILLISECOND = 300;
+
   setTimeout(() => {
     $body.style.opacity = '1';
-  }, 300);
+  }, EXECUTE_AFTER_MILLISECOND);
 });
 
 $toggleBtn.onclick = () => {

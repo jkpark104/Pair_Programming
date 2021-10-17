@@ -26,9 +26,11 @@ window.addEventListener('DOMContentLoaded', () => {
       $subMenu.style.height = $subMenu.scrollHeight + 'px';
   });
 
+  const EXECUTE_AFTER_MILLISECOND = 400;
+
   setTimeout(() => {
     $body.style.opacity = '1';
-  }, 400);
+  }, EXECUTE_AFTER_MILLISECOND);
 });
 
 $accordion.onclick = e => {

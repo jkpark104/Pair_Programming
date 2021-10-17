@@ -40,8 +40,7 @@ carousel($carousel, [
 ]);
 
 window.onload = () => {
-  const slideWidth = $carousel.firstElementChild.firstElementChild.scrollWidth;
-
+  const slideWidth = $carousel.firstElementChild.firstElementChild.clientWidth;
   $carousel.style.width = slideWidth + 'px';
 };
 

@@ -10,14 +10,12 @@ const inputMessageToPopUp = message => {
   if (message !== '') {
     $popupMessage.textContent = 'from popup : ' + $inputMessage.value.trim();
   }
-
   $inputMessage.value = '';
 };
 
 // Event bindings
 $togglePopup.onclick = () => {
   $popupMessage.textContent = '';
-
   $modalContainer.classList.add('active');
 };
 
