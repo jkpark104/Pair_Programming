@@ -10,7 +10,6 @@ let slideOrder = 1;
 const $carousel = document.querySelector('.carousel');
 
 // Functions-------------------------------
-
 const whetherBothEnds = () =>
   slideOrder === 0 ||
   slideOrder === $carousel.querySelectorAll('img').length - 1;
@@ -77,5 +76,6 @@ $carousel.ontransitionend = e => {
 
   const slideLastIndex = $carousel.querySelectorAll('img').length - 1;
   slideOrder = Math.abs(slideOrder - slideLastIndex + 1);
+
   setCarouselProperty({ currentSlide: slideOrder, duration: 0 });
 };

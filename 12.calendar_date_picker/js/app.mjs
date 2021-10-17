@@ -6,9 +6,10 @@ const MOVE_PREV = -1;
 const $calendar = document.querySelector('.calendar');
 const $datePicker = document.querySelector('.date-picker');
 
+// Variables ----------------------------------------------
 const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-// state
+// state ----------------------------------------------------
 const state = {
   month: new Date().getMonth(),
   year: new Date().getFullYear(),
@@ -16,7 +17,7 @@ const state = {
   pickedDate: null
 };
 
-// Function
+// Functions ---------------------------------------------------
 const getMonthName = month =>
   new Date(0, month).toLocaleString('en-us', { month: 'long' });
 
@@ -135,7 +136,7 @@ const pickDate = date => {
   render();
 };
 
-// Event Binding
+// Event Binding --------------------------------------------------------------------------
 window.addEventListener('DOMContentLoaded', () => {
   state.dates = getDate();
 

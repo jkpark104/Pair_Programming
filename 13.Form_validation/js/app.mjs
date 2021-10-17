@@ -1,12 +1,14 @@
 import auth from './auth.mjs';
 import toaster from './toaster.mjs';
 
-const isValid = (inputType, inputValue) => auth[inputType].checker(inputValue);
+// Functions ------------------------------------------------------
+const isValidInput = (inputType, inputValue) =>
+  auth[inputType].checker(inputValue);
 
-const inputCompleteCheck = targetInputs =>
-  targetInputs
-    .map($input => auth[$input.name].completed)
-    .every(completed => completed === true);
+const inputCompleteCheck = targetInputElements =>
+  targetInputElements
+    .map($inputElement => auth[$inputElement.name].completed)
+    .every(completed => completed);
 
 const setCompletedOfAuth = (eventTarget, isCompleted) => {
   const inputType = eventTarget.name;
@@ -20,10 +22,10 @@ const setCompletedOfAuth = (eventTarget, isCompleted) => {
     : ($bar.textContent = auth[inputType].alert);
 };
 
-const checkUserInfo = eventTarget => {
+const checkUserData = eventTarget => {
   const [inputType, inputValue] = [eventTarget.name, eventTarget.value];
 
-  setCompletedOfAuth(eventTarget, isValid(inputType, inputValue));
+  setCompletedOfAuth(eventTarget, isValidInput(inputType, inputValue));
 
   const $icons = eventTarget.parentNode.querySelectorAll('.icon');
 
@@ -44,7 +46,7 @@ const checkUserInfo = eventTarget => {
 window.onkeyup = e => {
   if (!e.target.matches('input')) return;
 
-  checkUserInfo(e.target);
+  checkUserData(e.target);
 };
 
 window.onclick = e => {
@@ -60,6 +62,7 @@ window.onsubmit = e => {
 
   if (!inputCompleteCheck([...$targetForm.querySelectorAll('input')])) return;
 
-  console.log(auth.getUserInfo());
+  auth.getUserInfo();
+
   toaster.add({ message: `${$targetForm.classList[1]} Successfully` });
 };

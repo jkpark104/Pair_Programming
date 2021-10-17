@@ -2,8 +2,8 @@
 const TRANSITION_DURATION = 300;
 
 // DOM Nodes--------------------
-const $toggleBtn = document.querySelector('.toggle-button');
 const $body = document.querySelector('body');
+const $toggleBtn = document.querySelector('.toggle-button');
 
 // Variables
 let isDarkMode = false;
