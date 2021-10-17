@@ -78,7 +78,7 @@
         display: block;
       }
 
-      .button {
+      .move-button {
         border: 0;
         background: transparent;
         color: inherit;
@@ -107,35 +107,39 @@
         grid-gap: 7px 0;
       }
 
-      .day button {
+      .day .date-picker-icon {
         position: relative;
         border: 0;
-        width: 4.5ch;
-        height: 4.5ch;
+        width: 5ch;
+        height: 5ch;
         border-radius: 50%;
         background-color: transparent;
         cursor: pointer;
         color: black;
       }
 
-      .day button.sunday {
+      .day .date-picker-icon.sunday {
         color: red;
       }
 
-      .day button:not(.current) {
+      .day .date-picker-icon:not(.current) {
         color: lightgray;
       }
 
-      .day button:hover {
+      .day .date-picker-icon:hover {
         color: white;
         background-color: #03c75a;
         border-color: #03c75a;
       }
 
-      .day button.selected {
+      .day .date-picker-icon.selected {
         color: white;
         background-color: #03c75a;
         border-color: #03c75a;
+      }
+
+      .day .date-picker-icon.today {
+        border: 1px solid #03c75a;
       }
     </style>
   </head>

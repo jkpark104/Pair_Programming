@@ -1,12 +1,16 @@
-// DOM Nodes
+// Constant Numbers -------------------
+const TRANSITION_DURATION = 400;
+
+// DOM Nodes -------------------------------
 const $body = document.querySelector('body');
 const $accordion = document.querySelector('.accordion');
 const $menuContainers = document.querySelectorAll('.menu-container');
 const $subMenus = document.querySelectorAll('.submenu');
 
-const toggleMenuContainer = target => {
-  $menuContainers.forEach(($menuContainer, i) => {
-    target === i
+// Functions ------------------------------
+const toggleMenuContainer = targetIndex => {
+  $menuContainers.forEach(($menuContainer, index) => {
+    targetIndex === index
       ? $menuContainer.classList.toggle('active')
       : $menuContainer.classList.remove('active');
   });
@@ -18,6 +22,7 @@ const toggleMenuContainer = target => {
   });
 };
 
+// Event bindings ------------------------------
 window.addEventListener('DOMContentLoaded', () => {
   $body.style.opacity = '0';
 
@@ -26,11 +31,9 @@ window.addEventListener('DOMContentLoaded', () => {
       $subMenu.style.height = $subMenu.scrollHeight + 'px';
   });
 
-  const EXECUTE_AFTER_MILLISECOND = 400;
-
   setTimeout(() => {
     $body.style.opacity = '1';
-  }, EXECUTE_AFTER_MILLISECOND);
+  }, TRANSITION_DURATION);
 });
 
 $accordion.onclick = e => {

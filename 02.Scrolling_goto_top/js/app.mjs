@@ -1,8 +1,8 @@
-// DOM Nodes--------------------
-const $scrollIcon = document.querySelector('.scroll-icon');
-
 // Constant Number-------------
 const EXECUTE_AFTER_MILLISECOND = 100;
+
+// DOM Nodes--------------------
+const $scrollIcon = document.querySelector('.scroll-icon');
 
 // Event Binding----------------
 

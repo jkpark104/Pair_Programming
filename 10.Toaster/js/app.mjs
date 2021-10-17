@@ -1,19 +1,23 @@
-// DOM Nodes
+// Constant Numbers----------------------
+const REMOVE_AFTER_3SEC = 3000;
+
+// DOM Nodes-----------------------------
 const $body = document.querySelector('body');
 
+// Functions-----------------------------
 const createToast = ({ type, title, message }) => {
   const $toast = document.createElement('div');
   $toast.classList.add('toast', `toast-${type}`);
 
   $toast.innerHTML = `
-        <h4 class="toast-heading">${title}</h4>
-        <div class="toast-message">
-          <svg width="24" height="24">
-            <use xlink:href="#${type}" />
-          </svg>
-          <p>${message}</p>
-        </div>
-        <a class="close">&times;</a>`;
+  <h4 class="toast-heading">${title}</h4>
+  <div class="toast-message">
+  <svg width="24" height="24">
+  <use xlink:href="#${type}" />
+  </svg>
+  <p>${message}</p>
+  </div>
+  <a class="close">&times;</a>`;
   return $toast;
 };
 
@@ -28,10 +32,22 @@ const toaster = {
       $toast.style.bottom = `${($toasts.length - (index + 1)) * 100}px`;
     });
 
-    setTimeout(() => $newToast.remove(), 3000);
+    setTimeout(() => $newToast.remove(), REMOVE_AFTER_3SEC);
   }
 };
 
+// Event Handlings-----------------------------
+window.addEventListener('DOMContentLoaded', () => {
+  $body.style.setProperty('overflow-x', 'hidden');
+});
+
+window.onclick = e => {
+  if (!e.target.matches('.close')) return;
+
+  e.target.closest('.toast').remove();
+};
+
+// --------------------------------------
 const TOAST_TYPE = {
   SUCCESS: 'success',
   ERROR: 'error',
@@ -43,16 +59,6 @@ const createToastAction = (type, title, message) => ({
   title,
   message
 });
-
-window.addEventListener('DOMContentLoaded', () => {
-  $body.style.setProperty('overflow-x', 'hidden');
-});
-
-window.onclick = e => {
-  if (!e.target.matches('.close')) return;
-
-  e.target.closest('.toast').remove();
-};
 
 // Button click Event Handlers
 document.querySelector('.show-success').onclick = () =>

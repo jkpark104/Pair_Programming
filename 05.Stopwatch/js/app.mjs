@@ -3,7 +3,7 @@ const EXCUTE_AFTER_MILLISECOND = 10;
 
 // DOM Nodes ---------------
 const $display = document.querySelector('.display');
-const [$playButton, $resetButton] = document.querySelectorAll('.control');
+const [$startButton, $resetButton] = document.querySelectorAll('.control');
 const $laps = document.querySelector('.laps');
 
 // function ----------------
@@ -13,16 +13,17 @@ const clearLaps = () => {
   });
 };
 
-const convertToTime = ms => {
-  const min = Math.floor(ms / 1000 / 60);
-  const sec = Math.floor((ms / 1000) % 60);
-  const millis = Math.floor((ms % 1000) / 10);
+const convertToTime = millis => {
+  const min = Math.floor(millis / 1000 / 60);
+  const sec = Math.floor((millis / 1000) % 60);
+  const ms = Math.floor((millis % 1000) / 10);
 
   const format = n => (n < 10 ? '0' + n : n + '');
 
-  return `${format(min)}:${format(sec)}:${format(millis)}`;
+  return `${format(min)}:${format(sec)}:${format(ms)}`;
 };
 
+// Stopwatch Object
 const Stopwatch = {
   initMillis: null,
 
@@ -43,13 +44,13 @@ const Stopwatch = {
   },
 
   start() {
-    this.initMillis >= 0
-      ? (this.initMillis = new Date() - this.initMillis)
-      : (this.initMillis = new Date());
+    this.initMillis === null
+      ? (this.initMillis = new Date())
+      : (this.initMillis = new Date() - this.initMillis);
 
     this.state = 'start';
 
-    $playButton.textContent = 'Stop';
+    $startButton.textContent = 'Stop';
     $resetButton.textContent = 'Laps';
     $resetButton.disabled = false;
 
@@ -63,7 +64,7 @@ const Stopwatch = {
   stop() {
     this.state = 'stop';
     this.initMillis = new Date() - this.initMillis;
-    $playButton.textContent = 'Start';
+    $startButton.textContent = 'Start';
     $resetButton.textContent = 'Reset';
   },
 
@@ -76,18 +77,20 @@ const Stopwatch = {
 
     const $domFragment = document.createDocumentFragment();
 
-    [this.laps.length, convertToTime(this.laps.at(-1))].forEach(info => {
-      const $div = document.createElement('div');
-      $div.appendChild(document.createTextNode(info));
-      $domFragment.appendChild($div);
-    });
+    [this.laps.length, convertToTime(this.laps[this.laps.length - 1])].forEach(
+      info => {
+        const $div = document.createElement('div');
+        $div.appendChild(document.createTextNode(info));
+        $domFragment.appendChild($div);
+      }
+    );
 
     $laps.appendChild($domFragment);
   }
 };
 
 // Event Binding------------
-$playButton.onclick = () => {
+$startButton.onclick = () => {
   Stopwatch.state === 'stop' ? Stopwatch.start() : Stopwatch.stop();
 };
 

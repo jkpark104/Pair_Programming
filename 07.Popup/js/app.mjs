@@ -1,11 +1,11 @@
-// DOM Nodes
+// DOM Nodes---------------------
 const $togglePopup = document.querySelector('.toggle-popup');
 const $modalContainer = document.querySelector('.modal-container');
 const $modal = document.querySelector('.modal');
 const $inputMessage = document.querySelector('.input-message');
 const $popupMessage = document.querySelector('.popup-message');
 
-// 함수
+// Funtions----------------------
 const inputMessageToPopUp = message => {
   if (message !== '') {
     $popupMessage.textContent = 'from popup : ' + $inputMessage.value.trim();
@@ -13,7 +13,7 @@ const inputMessageToPopUp = message => {
   $inputMessage.value = '';
 };
 
-// Event bindings
+// Event bindings ---------------------------
 $togglePopup.onclick = () => {
   $popupMessage.textContent = '';
   $modalContainer.classList.add('active');

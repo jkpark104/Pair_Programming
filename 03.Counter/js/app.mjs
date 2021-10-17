@@ -19,7 +19,6 @@ const counter = (function () {
 })();
 
 // Event binding -------------------
-
 $increaseButton.onclick = () => {
   $counterDisplay.textContent = counter.increase();
 };

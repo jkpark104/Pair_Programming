@@ -1,30 +1,35 @@
+// Constant Numbers
+const TRANSITION_DURATION = 300;
+
 // DOM Nodes--------------------
 const $toggleBtn = document.querySelector('.toggle-button');
 const $body = document.querySelector('body');
 
+// Variables
 let isDarkMode = false;
 
-const getMode = () => JSON.parse(localStorage.getItem('isDarkMode'));
-const toggleMode = isDarkMode => $body.classList.toggle('dark', isDarkMode);
+// Functions--------------------
+const getModeState = () => JSON.parse(localStorage.getItem('isDarkMode'));
+
+const changeMode = isDarkMode => $body.classList.toggle('dark', isDarkMode);
 
 // Event bindings -------------------
-
 window.addEventListener('DOMContentLoaded', () => {
-  getMode()
-    ? (isDarkMode = getMode())
+  getModeState()
+    ? (isDarkMode = getModeState())
     : localStorage.setItem('isDarkMode', isDarkMode);
 
-  toggleMode(isDarkMode);
-
-  const EXECUTE_AFTER_MILLISECOND = 300;
+  changeMode(isDarkMode);
 
   setTimeout(() => {
     $body.style.opacity = '1';
-  }, EXECUTE_AFTER_MILLISECOND);
+  }, TRANSITION_DURATION);
 });
 
 $toggleBtn.onclick = () => {
-  isDarkMode = !getMode();
+  isDarkMode = !getModeState();
+
   localStorage.setItem('isDarkMode', isDarkMode);
-  toggleMode(isDarkMode);
+
+  changeMode(isDarkMode);
 };

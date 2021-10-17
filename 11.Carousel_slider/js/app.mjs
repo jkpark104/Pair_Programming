@@ -1,10 +1,15 @@
-const $carousel = document.querySelector('.carousel');
-
+// Constant Numbers --------------------------------
 const MOVE_BACKWARD = -1;
 const MOVE_FORWARD = 1;
 
+// Variables ----------------------------------
 let transitionEnd = false;
 let slideOrder = 1;
+
+// DOM Nodes ---------------------------------
+const $carousel = document.querySelector('.carousel');
+
+// Functions-------------------------------
 
 const whetherBothEnds = () =>
   slideOrder === 0 ||
@@ -16,7 +21,6 @@ const setCarouselProperty = properties => {
   });
 };
 
-// Functions-------------------------------
 const carousel = ($container, images) => {
   const imageGroup = [images[images.length - 1], ...images, images[0]];
 
@@ -32,6 +36,14 @@ const carousel = ($container, images) => {
   setCarouselProperty({ currentSlide: 1, duration: 500 });
 };
 
+const moveImageTo = backAndForth => {
+  if (!whetherBothEnds()) setCarouselProperty({ duration: 500 });
+
+  slideOrder += backAndForth;
+  setCarouselProperty({ currentSlide: slideOrder });
+};
+
+// --------------------------------------------------------
 carousel($carousel, [
   'movies/movie-1.jpg',
   'movies/movie-2.jpg',
@@ -39,16 +51,10 @@ carousel($carousel, [
   'movies/movie-4.jpg'
 ]);
 
+// Event Bindings -------------------------------------
 window.onload = () => {
   const slideWidth = $carousel.firstElementChild.firstElementChild.clientWidth;
   $carousel.style.width = slideWidth + 'px';
-};
-
-const slideImage = backAndForth => {
-  if (!whetherBothEnds()) setCarouselProperty({ duration: 500 });
-
-  slideOrder += backAndForth;
-  setCarouselProperty({ currentSlide: slideOrder });
 };
 
 $carousel.onclick = e => {
@@ -58,8 +64,8 @@ $carousel.onclick = e => {
   transitionEnd = true;
 
   e.target.matches('.prev')
-    ? slideImage(MOVE_BACKWARD)
-    : slideImage(MOVE_FORWARD);
+    ? moveImageTo(MOVE_BACKWARD)
+    : moveImageTo(MOVE_FORWARD);
 };
 
 $carousel.ontransitionend = e => {

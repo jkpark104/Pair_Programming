@@ -27,28 +27,22 @@ const fetchTabsData = () => {
 };
 
 const render = tabContents => {
+  const convertToTabHTML = ({ title }, index) =>
+    `<div class="tab" data-index="${index}">
+       ${title}
+     </div>`;
+
+  const convertToTabContentHTML = ({ content }, index) =>
+    `<div class="tab-content ${index === 0 ? 'active' : ''}">
+      ${content}
+     </div>`;
+
   $tabs.innerHTML = `
   <nav>
-    ${tabContents
-      .map(
-        ({ title }, i) => `
-          <div class="tab" data-index="${i}">
-            ${title}
-          </div>`
-      )
-      .join('')}
-      <span class="glider"></span>
+    ${tabContents.map(convertToTabHTML).join('')}
+    <span class="glider"></span>
   </nav>
-  ${tabContents
-    .map(
-      ({ content }, i) =>
-        `
-        <div class="tab-content ${i === 0 ? 'active' : ''}">
-          ${content}
-        </div>`
-    )
-    .join('')}
-  `;
+  ${tabContents.map(convertToTabContentHTML).join('')}`;
 
   $tabs.style.setProperty('--tabs-length', tabContents.length);
 };
@@ -65,7 +59,7 @@ const beActiveTabContent = index => {
 
 // Event binding
 window.addEventListener(
-  'DomContentLoaded',
+  'DOMContentLoaded',
   fetchTabsData().then(resolve => {
     $spinner.style.opacity = '0';
     render(resolve);

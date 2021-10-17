@@ -1,3 +1,6 @@
+// Constant Numbers
+const EXECUTE_AFTER_MILLISECOND = 1000;
+
 // DOM Nodes --------------
 const [$hour, $minute, $second] = document.querySelectorAll('.hand');
 
@@ -16,8 +19,6 @@ const timeCalculate = () => {
   $hour.style.setProperty('--deg', ANGLE_OF_HOUR_HAND);
   $minute.style.setProperty('--deg', ANGLE_OF_MINUTE_HAND);
   $second.style.setProperty('--deg', ANGLE_OF_SECOND_HAND);
-
-  const EXECUTE_AFTER_MILLISECOND = 1000;
 
   setTimeout(timeCalculate, EXECUTE_AFTER_MILLISECOND);
 };
