@@ -1,6 +1,3 @@
-// DOM Nodes
-const $tabs = document.querySelector('.tabs');
-const $spinner = document.querySelector('.spinner');
 // fetch fake data
 // eslint-disable-next-line arrow-body-style
 const fetchTabsData = () => {
@@ -26,6 +23,11 @@ const fetchTabsData = () => {
   });
 };
 
+// DOM Nodes -----------------------------------------------------
+const $tabs = document.querySelector('.tabs');
+const $spinner = document.querySelector('.spinner');
+
+// Functions ---------------------------------------------------
 const render = tabContents => {
   const convertToTabHTML = ({ title }, index) =>
     `<div class="tab" data-index="${index}">

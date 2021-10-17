@@ -1,6 +1,5 @@
 // DOM Nodes--------------------
-const $nav = document.querySelector('.container nav');
-const $main = document.querySelector('.container main');
+const [$nav, $main] = document.querySelector('.container').children;
 const $toggle = document.querySelector('.toggle');
 
 // Function----------------------
