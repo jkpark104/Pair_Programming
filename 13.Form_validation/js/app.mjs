@@ -8,12 +8,22 @@ const inputCompleteCheck = targetInputs =>
     .map($input => auth[$input.name].completed)
     .every(completed => completed === true);
 
+const setCompletedOfAuth = (eventTarget, isCompleted) => {
+  const inputType = eventTarget.name;
+
+  auth[inputType].completed = isCompleted;
+
+  const $bar = eventTarget.parentNode.querySelector('.bar');
+
+  isCompleted
+    ? ($bar.textContent = '')
+    : ($bar.textContent = auth[inputType].alert);
+};
+
 const checkUserInfo = eventTarget => {
   const [inputType, inputValue] = [eventTarget.name, eventTarget.value];
 
-  isValid(inputType, inputValue)
-    ? (auth[inputType].completed = true)
-    : (auth[inputType].completed = false);
+  setCompletedOfAuth(eventTarget, isValid(inputType, inputValue));
 
   const $icons = eventTarget.parentNode.querySelectorAll('.icon');
 
@@ -48,6 +58,8 @@ window.onsubmit = e => {
 
   const $targetForm = e.target.closest('.form');
 
-  if (inputCompleteCheck([...$targetForm.querySelectorAll('input')]))
-    toaster.add({ message: `${$targetForm.classList[1]} Successfully` });
+  if (!inputCompleteCheck([...$targetForm.querySelectorAll('input')])) return;
+
+  console.log(auth.getUserInfo());
+  toaster.add({ message: `${$targetForm.classList[1]} Successfully` });
 };

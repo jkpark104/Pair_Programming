@@ -1,52 +1,56 @@
+// Constant Number
+const EXCUTE_AFTER_MILLISECOND = 10;
+
 // DOM Nodes ---------------
 const $display = document.querySelector('.display');
-const [$playButton, $resetButton] = document.querySelectorAll('.control');
+const [$startButton, $resetButton] = document.querySelectorAll('.control');
 const $laps = document.querySelector('.laps');
 
 // function ----------------
-const initLaps = () => {
+const clearLaps = () => {
   [...$laps.children].forEach($lap => {
     $lap.matches('.lap-title') ? ($lap.style.display = 'none') : $lap.remove();
   });
 };
 
-const convertToTime = ms => {
-  const min = Math.floor(ms / 1000 / 60);
-  const sec = Math.floor((ms / 1000) % 60);
-  const millis = Math.floor((ms % 1000) / 10);
+const convertToTime = millis => {
+  const min = Math.floor(millis / 1000 / 60);
+  const sec = Math.floor((millis / 1000) % 60);
+  const ms = Math.floor((millis % 1000) / 10);
 
   const format = n => (n < 10 ? '0' + n : n + '');
 
-  return `${format(min)}:${format(sec)}:${format(millis)}`;
+  return `${format(min)}:${format(sec)}:${format(ms)}`;
 };
 
+// Stopwatch Object
 const Stopwatch = {
-  initMillis: 0,
+  initMillis: null,
 
   state: 'stop',
 
   laps: [],
 
   reset() {
-    this.initMillis = 0;
+    this.initMillis = null;
 
     $display.textContent = convertToTime(0);
 
     this.laps = [];
 
-    initLaps();
+    clearLaps();
 
     $resetButton.disabled = true;
   },
 
   start() {
-    this.initMillis === 0
+    this.initMillis === null
       ? (this.initMillis = new Date())
       : (this.initMillis = new Date() - this.initMillis);
 
     this.state = 'start';
 
-    $playButton.textContent = 'Stop';
+    $startButton.textContent = 'Stop';
     $resetButton.textContent = 'Laps';
     $resetButton.disabled = false;
 
@@ -54,13 +58,13 @@ const Stopwatch = {
       if (this.state === 'stop') return;
 
       $display.textContent = convertToTime(new Date() - this.initMillis);
-    }, 10);
+    }, EXCUTE_AFTER_MILLISECOND);
   },
 
   stop() {
     this.state = 'stop';
     this.initMillis = new Date() - this.initMillis;
-    $playButton.textContent = 'Start';
+    $startButton.textContent = 'Start';
     $resetButton.textContent = 'Reset';
   },
 
@@ -71,23 +75,22 @@ const Stopwatch = {
 
     this.laps = [...this.laps, new Date() - this.initMillis];
 
-    const $el = document.createDocumentFragment();
+    const $domFragment = document.createDocumentFragment();
 
-    $laps.appendChild($el);
-    const $divEl = document.createElement('div');
-    $divEl.innerHTML = `<div>${this.laps.length}</div>`;
-    const $divEl2 = document.createElement('div');
-    $divEl2.innerHTML = `<div>${convertToTime(this.laps.at(-1))}</div>`;
+    [this.laps.length, convertToTime(this.laps[this.laps.length - 1])].forEach(
+      info => {
+        const $div = document.createElement('div');
+        $div.appendChild(document.createTextNode(info));
+        $domFragment.appendChild($div);
+      }
+    );
 
-    $el.appendChild($divEl);
-    $el.appendChild($divEl2);
-
-    $laps.appendChild($el);
+    $laps.appendChild($domFragment);
   }
 };
 
 // Event Binding------------
-$playButton.onclick = () => {
+$startButton.onclick = () => {
   Stopwatch.state === 'stop' ? Stopwatch.start() : Stopwatch.stop();
 };
 
@@ -96,7 +99,7 @@ $resetButton.onclick = () => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-  initLaps();
+  clearLaps();
 
   $resetButton.disabled = true;
 });

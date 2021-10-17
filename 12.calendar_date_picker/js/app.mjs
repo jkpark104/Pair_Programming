@@ -1,8 +1,8 @@
+// Constant Numbers ----------------------------------------
 const MOVE_NEXT = 1;
 const MOVE_PREV = -1;
 
-// DOM Nodes
-// const $container = document.querySelector('.container');
+// DOM Nodes --------------------------------------------
 const $calendar = document.querySelector('.calendar');
 const $datePicker = document.querySelector('.date-picker');
 
@@ -13,7 +13,7 @@ const state = {
   month: new Date().getMonth(),
   year: new Date().getFullYear(),
   dates: [],
-  pickedDate: 0
+  pickedDate: null
 };
 
 // Function
@@ -26,13 +26,16 @@ const convertDateFormat = date => {
   const day = date.getDate();
 
   const format = n => (n < 10 ? '0' + n : n + '');
+
   return `${year}-${format(month)}-${format(day)}`;
 };
 
 const createDate = ({ period, month, startDate }) =>
   Array.from({ length: period }, (_, index) => ({
     fullDate: convertDateFormat(new Date(state.year, month, startDate + index)),
+
     date: startDate + index,
+
     current: state.month === month ? 'current' : ''
   }));
 
@@ -71,14 +74,15 @@ const getDate = () => {
 
 const render = () => {
   const today = convertDateFormat(new Date());
+
   state.dates = getDate(state.year, state.month).map((eachDate, index) => ({
     ...eachDate,
     sunday: !(index % 7) ? 'sunday' : '',
     today: eachDate.fullDate === today ? 'today' : '',
-    selected: eachDate.date === +state.pickedDate ? 'selected' : ''
+    selected: eachDate.fullDate === state.pickedDate ? 'selected' : ''
   }));
 
-  const convertToHTML = ({
+  const convertButtonToHTML = ({
     fullDate,
     date,
     current,
@@ -86,7 +90,7 @@ const render = () => {
     today,
     selected
   }) =>
-    `<button class="${current} ${sunday} ${today} ${selected}">
+    `<button class="date-picker-icon ${current} ${sunday} ${today} ${selected}">
         <time datetime="${fullDate}">${date}</time>
      </button>`;
 
@@ -95,23 +99,26 @@ const render = () => {
     <h2 class="calendar-title">
       ${getMonthName(state.month)}<span>${state.year}</span>
     </h2>
-    <button class="button btnPrev">◀</button>
-    <button class="button btnNext">▶</button>
+    <button class="move-button btnPrev">◀</button>
+    <button class="move-button btnNext">▶</button>
   </div>
   <div class="calendar-grid">
     <div class="week">
       ${daysOfWeek.map(day => `<div>${day}</div>`).join('')}
     </div>
     <div class="day">
-      ${state.dates.map(convertToHTML).join('')}
+      ${state.dates.map(convertButtonToHTML).join('')}
     </div> 
   </div>`;
 };
 
 const changeState = backAndForth => {
   const date = new Date(state.year, state.month + backAndForth);
+
   [state.year, state.month] = [date.getFullYear(), date.getMonth()];
+
   state.dates = getDate();
+
   render();
 };
 
@@ -122,12 +129,16 @@ const changeMonth = target => {
 const pickDate = date => {
   state.pickedDate = date;
   state.dates = getDate();
+
+  $datePicker.value = date;
+
   render();
 };
 
 // Event Binding
 window.addEventListener('DOMContentLoaded', () => {
   state.dates = getDate();
+
   render();
 });
 
@@ -142,9 +153,11 @@ window.onclick = e => {
 $calendar.onclick = e => {
   if (!e.target.matches('.button') && !e.target.closest('button')) return;
 
-  e.target.matches('.button')
+  e.target.matches('.move-button')
     ? changeMonth(e.target)
-    : pickDate(e.target.closest('button').firstElementChild.dateTime);
+    : pickDate(
+        e.target.closest('.date-picker-icon').firstElementChild.dateTime
+      );
 };
 
 $datePicker.onfocus = () => {
