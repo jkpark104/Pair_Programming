@@ -1,3 +1,4 @@
+// Authentification ---------------------------------------------
 const auth = {
   inputID: null,
 
@@ -18,6 +19,16 @@ const auth = {
     completed: false
   },
 
+  username: {
+    checker(name) {
+      return name.length >= 1;
+    },
+
+    alert: '이름을 입력해 주세요.',
+
+    completed: false
+  },
+
   password: {
     checker(pw) {
       if (pw.length > 12 || pw.length < 6) return false;
@@ -34,16 +45,6 @@ const auth = {
     completed: false
   },
 
-  username: {
-    checker(name) {
-      return name.length >= 1;
-    },
-
-    alert: '이름을 입력해 주세요.',
-
-    completed: false
-  },
-
   'confirm-password': {
     checker(pw) {
       return auth.password.completed && auth.inputPassword === pw;
@@ -54,7 +55,8 @@ const auth = {
     completed: false
   },
 
-  getUserInfo() {
+  getUserInfo(METHOD) {
+    console.log(`POST/ ${METHOD}`);
     console.log({
       userid: auth.inputID,
       password: auth.inputPassword

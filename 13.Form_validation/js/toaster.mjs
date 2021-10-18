@@ -1,5 +1,7 @@
-const $body = document.querySelector('body');
+// Constant Numbers --------------------------
+const REMOVE_AFTER_3SEC = 3000;
 
+// Functions -----------------------------------
 const createToast = ({ message }) => {
   const $toast = document.createElement('div');
   $toast.classList.add('toast', 'toast-success');
@@ -19,7 +21,7 @@ const createToast = ({ message }) => {
 const toaster = {
   add(toastAction) {
     const $newToast = createToast(toastAction);
-    $body.appendChild($newToast);
+    document.body.appendChild($newToast);
 
     const $toasts = [...document.querySelectorAll('.toast')];
 
@@ -27,7 +29,7 @@ const toaster = {
       $toast.style.bottom = `${($toasts.length - (index + 1)) * 100}px`;
     });
 
-    setTimeout(() => $newToast.remove(), 3000);
+    setTimeout(() => $newToast.remove(), REMOVE_AFTER_3SEC);
   }
 };
 

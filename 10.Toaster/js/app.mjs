@@ -1,9 +1,6 @@
 // Constant Numbers----------------------
 const REMOVE_AFTER_3SEC = 3000;
 
-// DOM Nodes-----------------------------
-const $body = document.querySelector('body');
-
 // Functions-----------------------------
 const createToast = ({ type, title, message }) => {
   const $toast = document.createElement('div');
@@ -24,7 +21,7 @@ const createToast = ({ type, title, message }) => {
 const toaster = {
   add(toastAction) {
     const $newToast = createToast(toastAction);
-    $body.appendChild($newToast);
+    document.body.appendChild($newToast);
 
     const $toasts = [...document.querySelectorAll('.toast')];
 
@@ -38,7 +35,7 @@ const toaster = {
 
 // Event Handlings-----------------------------
 window.addEventListener('DOMContentLoaded', () => {
-  $body.style.setProperty('overflow-x', 'hidden');
+  document.body.style.overflowX = 'hidden';
 });
 
 window.onclick = e => {

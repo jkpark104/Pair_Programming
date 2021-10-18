@@ -1,5 +1,7 @@
 import auth from './auth.mjs';
 import toaster from './toaster.mjs';
+// Constant Numbers ----------------------------------------------
+const WAIT_BEFORE_RUNNING = 300;
 
 // Functions ------------------------------------------------------
 const isValidInput = (inputType, inputValue) =>
@@ -15,11 +17,11 @@ const setCompletedOfAuth = (eventTarget, isCompleted) => {
 
   auth[inputType].completed = isCompleted;
 
-  const $bar = eventTarget.parentNode.querySelector('.bar');
+  const $error = eventTarget.parentNode.querySelector('.error');
 
   isCompleted
-    ? ($bar.textContent = '')
-    : ($bar.textContent = auth[inputType].alert);
+    ? ($error.textContent = '')
+    : ($error.textContent = auth[inputType].alert);
 };
 
 const checkUserData = eventTarget => {
@@ -43,11 +45,15 @@ const checkUserData = eventTarget => {
     : ($button.disabled = true);
 };
 
-window.onkeyup = e => {
-  if (!e.target.matches('input')) return;
+// Event bindings --------------------------------------------
+window.addEventListener('DOMContentLoaded', () => {
+  document.body.style.overflowX = 'hidden';
+});
 
+window.onkeyup = _.debounce(e => {
+  if (!e.target.matches('input')) return;
   checkUserData(e.target);
-};
+}, WAIT_BEFORE_RUNNING);
 
 window.onclick = e => {
   if (!e.target.matches('.link') && !e.target.matches('a')) return;
@@ -62,7 +68,7 @@ window.onsubmit = e => {
 
   if (!inputCompleteCheck([...$targetForm.querySelectorAll('input')])) return;
 
-  auth.getUserInfo();
-
   toaster.add({ message: `${$targetForm.classList[1]} Successfully` });
+
+  auth.getUserInfo($targetForm.classList[1]);
 };
