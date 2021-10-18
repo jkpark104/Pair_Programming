@@ -1,7 +1,7 @@
 import auth from './auth.mjs';
 import toaster from './toaster.mjs';
 // Constant Numbers ----------------------------------------------
-const WAIT_BEFORE_RUNNING = 300;
+const WAIT_BEFORE_RUNNING = 100;
 
 // Functions ------------------------------------------------------
 const isValidInput = (inputType, inputValue) =>
