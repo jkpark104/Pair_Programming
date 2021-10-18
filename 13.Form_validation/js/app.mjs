@@ -43,6 +43,11 @@ const checkUserData = eventTarget => {
     : ($button.disabled = true);
 };
 
+// Event bindings --------------------------------------------
+window.addEventListener('DOMContentLoaded', () => {
+  document.body.style.overflowX = 'hidden';
+});
+
 window.onkeyup = e => {
   if (!e.target.matches('input')) return;
 
@@ -62,7 +67,7 @@ window.onsubmit = e => {
 
   if (!inputCompleteCheck([...$targetForm.querySelectorAll('input')])) return;
 
-  auth.getUserInfo();
-
   toaster.add({ message: `${$targetForm.classList[1]} Successfully` });
+
+  auth.getUserInfo($targetForm.classList[1]);
 };
