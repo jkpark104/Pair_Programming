@@ -2,7 +2,6 @@
 const TRANSITION_DURATION = 300;
 
 // DOM Nodes--------------------
-const $body = document.querySelector('body');
 const $toggleBtn = document.querySelector('.toggle-button');
 
 // Variables
@@ -11,7 +10,8 @@ let isDarkMode = false;
 // Functions--------------------
 const getModeState = () => JSON.parse(localStorage.getItem('isDarkMode'));
 
-const changeMode = isDarkMode => $body.classList.toggle('dark', isDarkMode);
+const changeMode = isDarkMode =>
+  document.body.classList.toggle('dark', isDarkMode);
 
 // Event bindings -------------------
 window.addEventListener('DOMContentLoaded', () => {
@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
   changeMode(isDarkMode);
 
   setTimeout(() => {
-    $body.style.opacity = '1';
+    document.body.style.opacity = '1';
   }, TRANSITION_DURATION);
 });
 

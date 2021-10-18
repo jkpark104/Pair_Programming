@@ -3,7 +3,7 @@ const MOVE_BACKWARD = -1;
 const MOVE_FORWARD = 1;
 
 // Variables ----------------------------------
-let transitionEnd = false;
+let transitionEnd = true;
 let slideOrder = 1;
 
 // DOM Nodes ---------------------------------
@@ -58,9 +58,9 @@ window.onload = () => {
 
 $carousel.onclick = e => {
   if (!e.target.matches('button')) return;
-  if (transitionEnd) return;
+  if (!transitionEnd) return;
 
-  transitionEnd = true;
+  transitionEnd = false;
 
   e.target.matches('.prev')
     ? moveImageTo(MOVE_BACKWARD)
@@ -70,7 +70,7 @@ $carousel.onclick = e => {
 $carousel.ontransitionend = e => {
   if (!e.target.matches('.carousel-slides')) return;
 
-  transitionEnd = false;
+  transitionEnd = true;
 
   if (!whetherBothEnds()) return;
 
